@@ -9,17 +9,15 @@ import ParticleBackground from '../../components/ParticleBackground';
 
 // Define the sections for the documentation
 const sections = [
-  { id: 'introduction', title: 'Introduction to Coreon' },
-  { id: 'limitations', title: 'Limitations of Traditional AI' },
-  { id: 'use-cases', title: 'Industry Use Cases' },
+  { id: 'introduction', title: 'Introduction' },
   { id: 'architecture', title: 'Platform Architecture' },
-  { id: 'agent-mesh', title: 'Agent Mesh System' },
-  { id: 'hitl', title: 'Human-in-the-Loop (HITL)' },
-  { id: 'security', title: 'Security and Compliance' },
+  { id: 'agent-mesh', title: 'Agent Mesh Technology' },
+  { id: 'hitl', title: 'Human-in-the-Loop Controls' },
+  { id: 'security', title: 'Security & Compliance' },
   { id: 'integration', title: 'Enterprise Integration' },
-  { id: 'token', title: 'Token Utility – $CORE' },
-  { id: 'deployment', title: 'Deployment and Best Practices' },
-  { id: 'appendix', title: 'Technical Appendix' },
+  { id: 'deployment', title: 'Deployment Models' },
+  { id: 'use-cases', title: 'Industry Use Cases' },
+  { id: 'api', title: 'API Reference' },
 ];
 
 export default function Documentation() {
@@ -78,7 +76,7 @@ export default function Documentation() {
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Sidebar navigation */}
             <div className="lg:w-1/4">
-              <div className="sticky top-32 p-6 bg-coreon-navy/50 backdrop-blur-md rounded-xl border border-coreon-blue/20">
+              <div className="sticky top-32 p-6 bg-coreon-navy/50 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg">
                 <h2 className="text-xl font-bold mb-6 gradient-text">Documentation</h2>
                 <nav className="space-y-2">
                   {sections.map((section) => (
@@ -101,223 +99,253 @@ export default function Documentation() {
             
             {/* Main content */}
             <div className="lg:w-3/4">
-              <div className="p-8 bg-coreon-navy/50 backdrop-blur-md rounded-xl border border-coreon-blue/20">
+              <div className="p-8 bg-coreon-navy/50 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg">
                 <h1 className="text-3xl md:text-4xl font-bold mb-8 gradient-text">
-                  Coreon – Technical Documentation
+                  Coreon Technical Documentation
                 </h1>
                 <p className="text-xl text-coreon-gray-light mb-12">
-                  Orchestrating intelligent agent systems for critical enterprise operations
+                  Enterprise-grade AI orchestration platform for regulated environments
                 </p>
                 
                 {/* Introduction */}
                 <section id="introduction" className="mb-16">
-                  <h2 className="text-2xl font-bold mb-6">Introduction to Coreon</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-coreon-blue">Introduction</h2>
                   <div className="prose prose-invert max-w-none">
-                    <p>
-                      Coreon is an AI orchestration platform designed for enterprise environments that operate under strict regulatory, security, and operational constraints. It allows companies to design and deploy intelligent, multi-agent systems with real-time human supervision and full auditability.
-                    </p>
-                    <p>
-                      Unlike traditional AI platforms that rely on large, isolated models, Coreon enables organizations to configure task-specific agents that collaborate within flexible, governed workflows. These agents are interconnected, modular, and transparent — making Coreon ideal for high-risk, high-stakes use cases.
-                    </p>
-                    <p>
-                      The platform's architecture is built from the ground up to address the unique challenges of enterprise AI deployment, with a focus on:
-                    </p>
-                    <ul>
-                      <li>Regulatory compliance and auditability</li>
-                      <li>Secure, controlled agent interactions</li>
-                      <li>Human oversight and intervention capabilities</li>
-                      <li>Enterprise system integration</li>
-                      <li>Scalable, resilient performance</li>
-                    </ul>
-                  </div>
-                </section>
-                
-                {/* Limitations of Traditional AI */}
-                <section id="limitations" className="mb-16">
-                  <h2 className="text-2xl font-bold mb-6">Limitations of Traditional AI</h2>
-                  <div className="prose prose-invert max-w-none">
-                    <p>
-                      Enterprise adoption of AI has long been limited by architectural and operational bottlenecks. Most legacy systems suffer from the following issues:
-                    </p>
-                    <ul>
-                      <li>
-                        <strong>Narrow task focus</strong>: Traditional AI systems are designed for specific, isolated tasks, leading to limited automation potential and fragmented workflows.
-                      </li>
-                      <li>
-                        <strong>Lack of communication</strong>: Poor integration between AI systems and human operators creates blind spots and inefficiencies.
-                      </li>
-                      <li>
-                        <strong>Compliance visibility gaps</strong>: Many AI systems operate as black boxes, making regulatory compliance difficult to verify and document.
-                      </li>
-                      <li>
-                        <strong>Workflow limitations</strong>: Inability to adapt to multi-step, regulated workflows that require contextual understanding across process stages.
-                      </li>
-                      <li>
-                        <strong>Scalability constraints</strong>: Traditional AI architectures often face performance bottlenecks when deployed at enterprise scale.
-                      </li>
-                    </ul>
-                    <p>
-                      Coreon directly addresses these limitations by introducing governed AI networks, clear human oversight layers, and a mesh-based intelligence system that supports task decomposition, specialization, and auditability.
-                    </p>
-                  </div>
-                </section>
-                
-                {/* Industry Use Cases */}
-                <section id="use-cases" className="mb-16">
-                  <h2 className="text-2xl font-bold mb-6">Industry Use Cases</h2>
-                  <div className="prose prose-invert max-w-none">
-                    <p>
-                      Coreon is purpose-built for sectors where reliability, transparency, and compliance are mission-critical:
+                    <p className="text-lg">
+                      Coreon is an enterprise AI orchestration platform that enables organizations to deploy intelligent agent systems with human oversight, complete auditability, and regulatory compliance. Unlike traditional AI solutions, Coreon creates interconnected agent networks that collaborate to solve complex tasks while maintaining governance controls.
                     </p>
                     
-                    <h3>Healthcare</h3>
-                    <ul>
-                      <li>Patient intake automation with compliance documentation</li>
-                      <li>Clinical triage systems with physician oversight</li>
-                      <li>Medical record analysis and summarization</li>
-                      <li>Treatment protocol adherence verification</li>
-                      <li>Regulatory documentation generation</li>
-                    </ul>
+                    <div className="my-8 bg-coreon-navy-dark/50 p-6 rounded-lg border border-coreon-blue/20">
+                      <h3 className="text-xl font-semibold mb-4">Key Capabilities</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Multi-Agent Orchestration</h4>
+                            <p className="text-sm text-coreon-gray-light">Coordinate specialized AI agents in complex workflows</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Enterprise Security</h4>
+                            <p className="text-sm text-coreon-gray-light">End-to-end encryption and role-based access controls</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Regulatory Compliance</h4>
+                            <p className="text-sm text-coreon-gray-light">Built-in controls for HIPAA, GDPR, SOC 2, and more</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Human Oversight</h4>
+                            <p className="text-sm text-coreon-gray-light">Review interfaces and intervention controls</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     
-                    <h3>Finance</h3>
-                    <ul>
-                      <li>Multi-stage fraud detection with human review thresholds</li>
-                      <li>Audit trail generation for regulatory reporting</li>
-                      <li>Automated compliance checks with exception handling</li>
-                      <li>Risk assessment with explainable decision paths</li>
-                      <li>Regulatory report creation and validation</li>
-                    </ul>
-                    
-                    <h3>Insurance</h3>
-                    <ul>
-                      <li>Multi-agent claim processing workflows</li>
-                      <li>Policy validation and exception handling</li>
-                      <li>Risk assessment with human oversight</li>
-                      <li>Customer communication with compliance checks</li>
-                      <li>Fraud detection with explainable flagging</li>
-                    </ul>
-                    
-                    <h3>Public Sector</h3>
-                    <ul>
-                      <li>Document automation with security clearance controls</li>
-                      <li>Eligibility verification with audit trails</li>
-                      <li>Decision support with transparency requirements</li>
-                      <li>Case management with oversight thresholds</li>
-                      <li>Compliance verification for regulatory processes</li>
-                    </ul>
+                    <p>
+                      Coreon is designed specifically for enterprises in regulated industries where reliability, transparency, and compliance are mission-critical requirements. The platform enables organizations to implement AI systems that maintain human judgment for sensitive decisions while automating routine processes.
+                    </p>
                   </div>
                 </section>
                 
                 {/* Platform Architecture */}
                 <section id="architecture" className="mb-16">
-                  <h2 className="text-2xl font-bold mb-6">Platform Architecture</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-coreon-blue">Platform Architecture</h2>
                   <div className="prose prose-invert max-w-none">
-                    <p>
-                      Coreon is composed of four architectural layers, each supporting key capabilities:
+                    <p className="text-lg">
+                      Coreon's architecture consists of four integrated layers that work together to provide secure, compliant AI orchestration with complete visibility and control.
                     </p>
                     
-                    <h3>4.1 Data Abstraction Layer</h3>
-                    <p>
-                      This layer ingests structured and unstructured enterprise data, performs normalization, validation, and enriches it with context. Key features include:
-                    </p>
-                    <ul>
-                      <li>Data format normalization across multiple source systems</li>
-                      <li>Schema validation with error handling and correction</li>
-                      <li>Context generation using Named Entity Recognition (NER) and semantic mapping</li>
-                      <li>Metadata tagging for compliance and security controls</li>
-                      <li>Data lineage tracking for audit purposes</li>
-                    </ul>
+                    <div className="my-8 rounded-lg overflow-hidden border border-coreon-blue/20">
+                      <div className="bg-gradient-to-r from-coreon-blue/20 to-coreon-navy-dark p-4 border-b border-coreon-blue/20">
+                        <h3 className="font-semibold">Architectural Layers</h3>
+                      </div>
+                      <div className="bg-coreon-navy-dark/50 p-6">
+                        <div className="space-y-6">
+                          <div className="flex flex-col md:flex-row">
+                            <div className="md:w-1/4 font-medium text-coreon-blue mb-2 md:mb-0">Data Abstraction Layer</div>
+                            <div className="md:w-3/4">
+                              <p className="mb-2">Normalizes and validates enterprise data from multiple sources, enriches with context, and applies security metadata.</p>
+                              <ul className="list-disc pl-5 text-sm text-coreon-gray-light">
+                                <li>Schema validation and error handling</li>
+                                <li>Context generation with NER</li>
+                                <li>Data lineage tracking</li>
+                                <li>Security classification</li>
+                              </ul>
+                            </div>
+                          </div>
+                          
+                          <div className="flex flex-col md:flex-row">
+                            <div className="md:w-1/4 font-medium text-coreon-blue mb-2 md:mb-0">Agent Mesh</div>
+                            <div className="md:w-3/4">
+                              <p className="mb-2">Core orchestration system where specialized AI agents collaborate in configurable workflows.</p>
+                              <ul className="list-disc pl-5 text-sm text-coreon-gray-light">
+                                <li>Orchestrator agents</li>
+                                <li>Data processing agents</li>
+                                <li>Compliance validators</li>
+                                <li>Human interface agents</li>
+                              </ul>
+                            </div>
+                          </div>
+                          
+                          <div className="flex flex-col md:flex-row">
+                            <div className="md:w-1/4 font-medium text-coreon-blue mb-2 md:mb-0">Governance Kernel</div>
+                            <div className="md:w-3/4">
+                              <p className="mb-2">Enforces policies, security controls, and maintains comprehensive audit logs.</p>
+                              <ul className="list-disc pl-5 text-sm text-coreon-gray-light">
+                                <li>Decision tracking with attribution</li>
+                                <li>Business rule enforcement</li>
+                                <li>Approval management</li>
+                                <li>Audit logging</li>
+                              </ul>
+                            </div>
+                          </div>
+                          
+                          <div className="flex flex-col md:flex-row">
+                            <div className="md:w-1/4 font-medium text-coreon-blue mb-2 md:mb-0">Teleoperation Interface</div>
+                            <div className="md:w-3/4">
+                              <p className="mb-2">Provides monitoring, review, and intervention capabilities for human operators.</p>
+                              <ul className="list-disc pl-5 text-sm text-coreon-gray-light">
+                                <li>Live agent activity dashboards</li>
+                                <li>Review queues</li>
+                                <li>Approval workflows</li>
+                                <li>System health monitoring</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     
-                    <h3>4.2 Agent Mesh</h3>
                     <p>
-                      This is the core orchestration system, where multiple AI agents are configured and interconnected to fulfill domain-specific workflows. Agents are modular, can operate sequentially or in parallel, and include:
+                      This layered architecture enables Coreon to maintain separation of concerns while providing comprehensive visibility across the entire AI workflow. Each layer has specific responsibilities and interfaces with adjacent layers through well-defined APIs.
                     </p>
-                    <ul>
-                      <li>Orchestrator agents that manage workflow execution</li>
-                      <li>Data processors for information extraction and transformation</li>
-                      <li>Compliance validators that ensure regulatory adherence</li>
-                      <li>Human interface agents that manage operator interactions</li>
-                      <li>Domain-specific reasoning agents for specialized tasks</li>
-                    </ul>
-                    
-                    <h3>4.3 Governance Kernel</h3>
-                    <p>
-                      Provides oversight and enforcement of organizational policies, security controls, and auditability:
-                    </p>
-                    <ul>
-                      <li>Real-time decision tracking with attribution</li>
-                      <li>Business rule enforcement with version control</li>
-                      <li>Intervention and approval management</li>
-                      <li>Policy enforcement across the agent mesh</li>
-                      <li>Comprehensive audit logging and reporting</li>
-                    </ul>
-                    
-                    <h3>4.4 Teleoperation Interface</h3>
-                    <p>
-                      This interface allows designated personnel to monitor, review, approve, or interrupt any part of the AI mesh's execution:
-                    </p>
-                    <ul>
-                      <li>Live dashboards showing agent activity and status</li>
-                      <li>Review queues for human verification tasks</li>
-                      <li>Approval workflows with role-based permissions</li>
-                      <li>Anomaly tracking and intervention tools</li>
-                      <li>Performance metrics and system health monitoring</li>
-                    </ul>
                   </div>
                 </section>
                 
-                {/* Agent Mesh System */}
+                {/* Agent Mesh Technology */}
                 <section id="agent-mesh" className="mb-16">
-                  <h2 className="text-2xl font-bold mb-6">Agent Mesh System</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-coreon-blue">Agent Mesh Technology</h2>
                   <div className="prose prose-invert max-w-none">
-                    <p>
-                      Coreon enables developers to create customized agent meshes for complex workflows. Each mesh is a network of agents that collaborate to process, verify, and escalate information.
+                    <p className="text-lg">
+                      The Agent Mesh is Coreon's core innovation, enabling the creation of specialized AI agents that collaborate to solve complex tasks while maintaining governance and auditability.
                     </p>
                     
-                    <h3>Agent Types</h3>
-                    <ul>
-                      <li>Document classifiers for content categorization</li>
-                      <li>Data extractors for structured information retrieval</li>
-                      <li>Compliance agents for regulatory verification</li>
-                      <li>Domain-specific logic agents for specialized reasoning</li>
-                      <li>Output verifiers for quality control</li>
-                      <li>Interface agents for human interaction management</li>
-                      <li>Orchestration agents for workflow coordination</li>
-                      <li>Memory agents for context retention across processes</li>
-                    </ul>
+                    <div className="my-8 bg-coreon-navy-dark/50 p-6 rounded-lg border border-coreon-blue/20">
+                      <h3 className="text-xl font-semibold mb-4">Agent Types</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="p-4 bg-coreon-navy/40 rounded-lg">
+                          <h4 className="font-medium text-coreon-blue">Data Processing Agents</h4>
+                          <ul className="mt-2 text-sm space-y-1">
+                            <li>Document classifiers</li>
+                            <li>Information extractors</li>
+                            <li>Data transformers</li>
+                            <li>Content analyzers</li>
+                          </ul>
+                        </div>
+                        
+                        <div className="p-4 bg-coreon-navy/40 rounded-lg">
+                          <h4 className="font-medium text-coreon-blue">Compliance Agents</h4>
+                          <ul className="mt-2 text-sm space-y-1">
+                            <li>Regulatory validators</li>
+                            <li>Security monitors</li>
+                            <li>Policy enforcers</li>
+                            <li>Audit generators</li>
+                          </ul>
+                        </div>
+                        
+                        <div className="p-4 bg-coreon-navy/40 rounded-lg">
+                          <h4 className="font-medium text-coreon-blue">Orchestration Agents</h4>
+                          <ul className="mt-2 text-sm space-y-1">
+                            <li>Workflow coordinators</li>
+                            <li>Task dispatchers</li>
+                            <li>Error handlers</li>
+                            <li>System monitors</li>
+                          </ul>
+                        </div>
+                        
+                        <div className="p-4 bg-coreon-navy/40 rounded-lg">
+                          <h4 className="font-medium text-coreon-blue">Interface Agents</h4>
+                          <ul className="mt-2 text-sm space-y-1">
+                            <li>Human reviewers</li>
+                            <li>Notification managers</li>
+                            <li>Escalation handlers</li>
+                            <li>Feedback collectors</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
                     
-                    <h3>Example Mesh Configuration</h3>
-                    <pre className="bg-coreon-navy-dark p-4 rounded-md overflow-x-auto">
-{`POST /api/v1/agent-meshes
-{
-  "name": "Insurance Claims Flow",
+                    <h3 className="text-xl font-semibold mb-4">Agent Configuration</h3>
+                    <p>
+                      Agents are configured through a declarative API that specifies their behavior, connections, and governance controls. Below is a simplified example of an agent mesh configuration:
+                    </p>
+                    
+                    <pre className="bg-coreon-navy-dark p-4 rounded-md overflow-x-auto my-6">
+{`{
+  "name": "Claims Processing Workflow",
   "agents": [
     {
-      "name": "document-classifier",
+      "id": "document-classifier",
+      "name": "Document Classifier",
       "type": "data-processing",
-      "model": "gpt-4",
+      "model": "coreon-nlp-v2",
       "parameters": {
         "temperature": 0.2,
         "max_tokens": 2000
       }
     },
     {
-      "name": "data-extractor",
+      "id": "data-extractor",
+      "name": "Data Extractor",
       "type": "data-processing",
-      "model": "claude-3",
+      "model": "coreon-structure-v1",
       "parameters": {
         "temperature": 0.1,
         "max_tokens": 4000
       }
     },
     {
-      "name": "compliance-verifier",
+      "id": "compliance-validator",
+      "name": "Compliance Validator",
       "type": "compliance",
       "model": "coreon-finance-secure",
       "parameters": {
         "temperature": 0.0,
         "max_tokens": 1000
       }
+    },
+    {
+      "id": "human-interface",
+      "name": "Human Interface",
+      "type": "interface",
+      "model": "coreon-interface-v3"
     }
   ],
   "connections": [
@@ -328,12 +356,11 @@ export default function Documentation() {
     },
     {
       "from": "data-extractor",
-      "to": "compliance-verifier",
-      "condition": "always"
+      "to": "compliance-validator"
     },
     {
-      "from": "compliance-verifier",
-      "to": "human-review",
+      "from": "compliance-validator",
+      "to": "human-interface",
       "condition": "compliance_score < 0.95"
     }
   ]
@@ -341,282 +368,785 @@ export default function Documentation() {
                     </pre>
                     
                     <p>
-                      The agent mesh allows for precise and dynamic behavior while maintaining regulatory control and scalability. Developers can define complex interaction patterns, fallback behaviors, and human intervention points throughout the workflow.
+                      This configuration creates a workflow where documents are classified, relevant data is extracted, compliance is verified, and human review is triggered when needed. The mesh approach allows for precise control over information flow while maintaining regulatory compliance.
                     </p>
                   </div>
                 </section>
                 
-                {/* Human-in-the-Loop */}
+                {/* Human-in-the-Loop Controls */}
                 <section id="hitl" className="mb-16">
-                  <h2 className="text-2xl font-bold mb-6">Human-in-the-Loop (HITL)</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-coreon-blue">Human-in-the-Loop Controls</h2>
                   <div className="prose prose-invert max-w-none">
-                    <p>
-                      Human-in-the-Loop controls in Coreon ensure that high-stakes decisions are governed with appropriate human involvement. This includes:
+                    <p className="text-lg">
+                      Coreon's human-in-the-loop (HITL) controls ensure that AI systems maintain appropriate human oversight, especially for high-stakes decisions in regulated environments.
                     </p>
                     
-                    <ul>
-                      <li>Configurable approval checkpoints in workflows</li>
-                      <li>Confidence thresholds that trigger human review</li>
-                      <li>Exception routing for edge cases</li>
-                      <li>Feedback integration to improve model reliability</li>
-                      <li>Escalation paths for critical decisions</li>
-                    </ul>
+                    <div className="my-8 bg-coreon-navy-dark/50 rounded-lg border border-coreon-blue/20 overflow-hidden">
+                      <div className="bg-gradient-to-r from-coreon-blue/20 to-coreon-navy-dark p-4 border-b border-coreon-blue/20">
+                        <h3 className="font-semibold">HITL Control Mechanisms</h3>
+                      </div>
+                      <div className="p-6">
+                        <div className="space-y-6">
+                          <div>
+                            <h4 className="font-medium text-coreon-blue mb-2">Supervision Modes</h4>
+                            <ul className="list-disc pl-5 space-y-1">
+                              <li><span className="font-medium">Full Oversight:</span> <span className="text-sm text-coreon-gray-light">All decisions require explicit human approval</span></li>
+                              <li><span className="font-medium">Threshold-Based:</span> <span className="text-sm text-coreon-gray-light">Review triggered by confidence scores or risk levels</span></li>
+                              <li><span className="font-medium">Sampling:</span> <span className="text-sm text-coreon-gray-light">Random subset reviewed for quality control</span></li>
+                              <li><span className="font-medium">Exception-Only:</span> <span className="text-sm text-coreon-gray-light">Only flagged cases require human intervention</span></li>
+                            </ul>
+                          </div>
+                          
+                          <div>
+                            <h4 className="font-medium text-coreon-blue mb-2">Review Interface</h4>
+                            <ul className="list-disc pl-5 space-y-1">
+                              <li>Prioritized task queues with deadlines</li>
+                              <li>Context-rich decision support information</li>
+                              <li>One-click approval/rejection with comments</li>
+                              <li>Historical performance metrics</li>
+                            </ul>
+                          </div>
+                          
+                          <div>
+                            <h4 className="font-medium text-coreon-blue mb-2">Intervention Controls</h4>
+                            <ul className="list-disc pl-5 space-y-1">
+                              <li>Emergency stop capabilities for individual agents or workflows</li>
+                              <li>Runtime parameter adjustments</li>
+                              <li>Manual overrides with justification tracking</li>
+                              <li>Feedback collection for model improvement</li>
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     
                     <p>
-                      Operators can use review dashboards, monitor AI performance in real time, and directly intervene or approve sensitive tasks. The HITL system includes:
+                      HITL controls are configurable at both the platform level and for individual workflows. This allows organizations to implement the appropriate level of human oversight based on risk profiles, regulatory requirements, and operational needs.
                     </p>
-                    
-                    <h3>Review Interface</h3>
-                    <ul>
-                      <li>Task queues organized by priority and deadline</li>
-                      <li>Context-rich decision support information</li>
-                      <li>One-click approval/rejection with comment capability</li>
-                      <li>Historical performance metrics for similar cases</li>
-                      <li>Audit trail of previous human decisions</li>
-                    </ul>
-                    
-                    <h3>Intervention Controls</h3>
-                    <ul>
-                      <li>Emergency stop capabilities for individual agents or entire meshes</li>
-                      <li>Parameter adjustment during runtime</li>
-                      <li>Manual override options with justification tracking</li>
-                      <li>Feedback collection for model improvement</li>
-                    </ul>
-                    
-                    <h3>Supervision Modes</h3>
-                    <ul>
-                      <li>Full oversight (all decisions require approval)</li>
-                      <li>Threshold-based (review triggered by confidence scores)</li>
-                      <li>Sampling (review random subset for quality control)</li>
-                      <li>Exception-only (review only flagged cases)</li>
-                    </ul>
                   </div>
                 </section>
                 
-                {/* Security and Compliance */}
+                {/* Security & Compliance */}
                 <section id="security" className="mb-16">
-                  <h2 className="text-2xl font-bold mb-6">Security and Compliance</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-coreon-blue">Security & Compliance</h2>
                   <div className="prose prose-invert max-w-none">
-                    <p>
+                    <p className="text-lg">
                       Coreon includes enterprise-grade security measures and native compliance enforcement for regulated industries.
                     </p>
                     
-                    <h3>Security Features</h3>
-                    <ul>
-                      <li>End-to-end encryption for data in transit and at rest</li>
-                      <li>Role-based access control (RBAC) with granular permissions</li>
-                      <li>Immutable audit logging for all actions and decisions</li>
-                      <li>Per-region data residency enforcement</li>
-                      <li>Secure key management with rotation policies</li>
-                      <li>Vulnerability scanning and penetration testing</li>
-                      <li>Multi-factor authentication for sensitive operations</li>
-                    </ul>
+                    <div className="my-8 bg-coreon-navy-dark/50 p-6 rounded-lg border border-coreon-blue/20">
+                      <h3 className="text-xl font-semibold mb-4">Security Features</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">End-to-end Encryption</h4>
+                            <p className="text-sm text-coreon-gray-light">Secure data transmission and storage</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Role-based Access Controls</h4>
+                            <p className="text-sm text-coreon-gray-light">Granular permissions for secure operations</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Immutable Audit Logging</h4>
+                            <p className="text-sm text-coreon-gray-light">Complete, tamper-proof audit trail</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Per-region Data Residency</h4>
+                            <p className="text-sm text-coreon-gray-light">Regulatory compliance for data location</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     
-                    <h3>Supported Compliance Frameworks</h3>
-                    <ul>
-                      <li>HIPAA for healthcare data protection</li>
-                      <li>GDPR for data privacy and subject rights</li>
-                      <li>SOC 2 for service organization controls</li>
-                      <li>ISO 27001 for information security management</li>
-                      <li>PCI DSS for payment card industry data</li>
-                      <li>FINRA and SEC requirements for financial services</li>
-                      <li>Custom regulatory frameworks via policy templates</li>
-                    </ul>
+                    <div className="my-8 bg-coreon-navy-dark/50 p-6 rounded-lg border border-coreon-blue/20">
+                      <h3 className="text-xl font-semibold mb-4">Supported Compliance Frameworks</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">HIPAA</h4>
+                            <p className="text-sm text-coreon-gray-light">Healthcare data protection</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">GDPR</h4>
+                            <p className="text-sm text-coreon-gray-light">Data privacy and subject rights</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">SOC 2</h4>
+                            <p className="text-sm text-coreon-gray-light">Service organization controls</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">ISO 27001</h4>
+                            <p className="text-sm text-coreon-gray-light">Information security management</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     
-                    <h3>Compliance Enforcement</h3>
-                    <ul>
-                      <li>Automated policy checking before agent execution</li>
-                      <li>Data lineage tracking for full provenance</li>
-                      <li>Retention policy enforcement with secure deletion</li>
-                      <li>Consent management integration</li>
-                      <li>Comprehensive reporting for regulatory audits</li>
-                    </ul>
+                    <div className="my-8 bg-coreon-navy-dark/50 p-6 rounded-lg border border-coreon-blue/20">
+                      <h3 className="text-xl font-semibold mb-4">Compliance Enforcement</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Automated Policy Checking</h4>
+                            <p className="text-sm text-coreon-gray-light">Before agent execution</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Data Lineage Tracking</h4>
+                            <p className="text-sm text-coreon-gray-light">For full provenance</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Retention Policy Enforcement</h4>
+                            <p className="text-sm text-coreon-gray-light">With secure deletion</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Consent Management</h4>
+                            <p className="text-sm text-coreon-gray-light">Integration</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </section>
                 
                 {/* Enterprise Integration */}
                 <section id="integration" className="mb-16">
-                  <h2 className="text-2xl font-bold mb-6">Enterprise Integration</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-coreon-blue">Enterprise Integration</h2>
                   <div className="prose prose-invert max-w-none">
-                    <p>
+                    <p className="text-lg">
                       Coreon is API-first and supports flexible deployment strategies to integrate into both modern and legacy infrastructure.
                     </p>
                     
-                    <h3>Integration Capabilities</h3>
-                    <ul>
-                      <li>RESTful APIs for all platform components</li>
-                      <li>GraphQL endpoints for complex data operations</li>
-                      <li>SDKs in Python, Go, TypeScript, and Java</li>
-                      <li>Webhooks for real-time events and notifications</li>
-                      <li>Message queue integration (Kafka, RabbitMQ, SQS)</li>
-                    </ul>
+                    <div className="my-8 bg-coreon-navy-dark/50 p-6 rounded-lg border border-coreon-blue/20">
+                      <h3 className="text-xl font-semibold mb-4">Integration Capabilities</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">RESTful APIs</h4>
+                            <p className="text-sm text-coreon-gray-light">For all platform components</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">GraphQL Endpoints</h4>
+                            <p className="text-sm text-coreon-gray-light">For complex data operations</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">SDKs</h4>
+                            <p className="text-sm text-coreon-gray-light">Python, Go, TypeScript, and Java</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Webhooks</h4>
+                            <p className="text-sm text-coreon-gray-light">Real-time events and notifications</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Message Queue Integration</h4>
+                            <p className="text-sm text-coreon-gray-light">(Kafka, RabbitMQ, SQS)</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     
-                    <h3>Enterprise Connectors</h3>
-                    <p>
-                      Pre-built connectors for common enterprise systems:
-                    </p>
-                    <ul>
-                      <li>Salesforce for CRM integration</li>
-                      <li>SAP for ERP workflows</li>
-                      <li>Oracle for database operations</li>
-                      <li>ServiceNow for IT service management</li>
-                      <li>Microsoft 365 for document processing</li>
-                      <li>Workday for HR processes</li>
-                    </ul>
+                    <div className="my-8 bg-coreon-navy-dark/50 p-6 rounded-lg border border-coreon-blue/20">
+                      <h3 className="text-xl font-semibold mb-4">Enterprise Connectors</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Salesforce</h4>
+                            <p className="text-sm text-coreon-gray-light">CRM integration</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">SAP</h4>
+                            <p className="text-sm text-coreon-gray-light">ERP workflows</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Oracle</h4>
+                            <p className="text-sm text-coreon-gray-light">Database operations</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">ServiceNow</h4>
+                            <p className="text-sm text-coreon-gray-light">IT service management</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Microsoft 365</h4>
+                            <p className="text-sm text-coreon-gray-light">Document processing</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Workday</h4>
+                            <p className="text-sm text-coreon-gray-light">HR processes</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     
-                    <h3>Data Integration Patterns</h3>
-                    <ul>
-                      <li>Batch processing for large datasets</li>
-                      <li>Real-time streaming for continuous operations</li>
-                      <li>Change data capture for incremental updates</li>
-                      <li>Event-driven architecture for reactive workflows</li>
-                    </ul>
-                    
-                    <h3>Authentication Methods</h3>
-                    <ul>
-                      <li>OAuth 2.0 / OpenID Connect</li>
-                      <li>SAML for enterprise SSO</li>
-                      <li>API keys with rotation policies</li>
-                      <li>JWT-based authentication</li>
-                      <li>Integration with Active Directory / LDAP</li>
-                    </ul>
+                    <div className="my-8 bg-coreon-navy-dark/50 p-6 rounded-lg border border-coreon-blue/20">
+                      <h3 className="text-xl font-semibold mb-4">Data Integration Patterns</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Batch Processing</h4>
+                            <p className="text-sm text-coreon-gray-light">For large datasets</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Real-time Streaming</h4>
+                            <p className="text-sm text-coreon-gray-light">For continuous operations</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Change Data Capture</h4>
+                            <p className="text-sm text-coreon-gray-light">For incremental updates</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Event-driven Architecture</h4>
+                            <p className="text-sm text-coreon-gray-light">For reactive workflows</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </section>
                 
-                {/* Token Utility */}
-                <section id="token" className="mb-16">
-                  <h2 className="text-2xl font-bold mb-6">Token Utility – $CORE</h2>
-                  <div className="prose prose-invert max-w-none">
-                    <p>
-                      $CORE is the native token of the Coreon ecosystem and plays a central role in powering platform functions.
-                    </p>
-                    
-                    <h3>Use Cases</h3>
-                    <ul>
-                      <li>Pay-per-execution of agent workflows with transparent pricing</li>
-                      <li>Access to premium models and advanced compute capacity</li>
-                      <li>Staking for governance proposals and mesh configurations</li>
-                      <li>Rewards for validators, reviewers, and training contributors</li>
-                      <li>Usage quota management through token locking</li>
-                      <li>Priority execution for time-sensitive workloads</li>
-                    </ul>
-                    
-                    <h3>Token Economics</h3>
-                    <ul>
-                      <li>Fixed supply of 1 billion $CORE tokens</li>
-                      <li>Deflationary mechanism through burn on usage</li>
-                      <li>Staking rewards for network security</li>
-                      <li>Governance rights proportional to stake</li>
-                    </ul>
-                    
-                    <h3>Enterprise Token Management</h3>
-                    <ul>
-                      <li>Bulk purchase options with volume discounts</li>
-                      <li>Token custody solutions for enterprise treasury</li>
-                      <li>Usage analytics and forecasting tools</li>
-                      <li>Budget controls and department allocations</li>
-                    </ul>
-                    
-                    <p>
-                      $CORE aligns technical performance, access rights, and economic incentives within a single asset, creating a sustainable ecosystem for all participants.
-                    </p>
-                  </div>
-                </section>
-                
-                {/* Deployment and Best Practices */}
+                {/* Deployment Models */}
                 <section id="deployment" className="mb-16">
-                  <h2 className="text-2xl font-bold mb-6">Deployment and Best Practices</h2>
+                  <h2 className="text-2xl font-bold mb-6 text-coreon-blue">Deployment Models</h2>
                   <div className="prose prose-invert max-w-none">
-                    <p>
+                    <p className="text-lg">
                       Coreon can be deployed in various environments to meet enterprise constraints.
                     </p>
                     
-                    <h3>Deployment Options</h3>
-                    <ul>
-                      <li>Fully managed SaaS with enterprise SLAs</li>
-                      <li>Customer-deployed in AWS, Azure, or GCP</li>
-                      <li>Hybrid deployments with on-premise data protection</li>
-                      <li>Full on-premise deployment for sensitive infrastructure</li>
-                      <li>Edge deployment for latency-sensitive applications</li>
+                    <div className="my-8 bg-coreon-navy-dark/50 p-6 rounded-lg border border-coreon-blue/20">
+                      <h3 className="text-xl font-semibold mb-4">Deployment Options</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Fully Managed SaaS</h4>
+                            <p className="text-sm text-coreon-gray-light">With enterprise SLAs</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Customer-deployed</h4>
+                            <p className="text-sm text-coreon-gray-light">AWS, Azure, or GCP</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Hybrid Deployments</h4>
+                            <p className="text-sm text-coreon-gray-light">On-premise data protection</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Full On-premise Deployment</h4>
+                            <p className="text-sm text-coreon-gray-light">For sensitive infrastructure</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Edge Deployment</h4>
+                            <p className="text-sm text-coreon-gray-light">For latency-sensitive applications</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="my-8 bg-coreon-navy-dark/50 p-6 rounded-lg border border-coreon-blue/20">
+                      <h3 className="text-xl font-semibold mb-4">Recommended Practices</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Start with Conservative Agent Permissions</h4>
+                            <p className="text-sm text-coreon-gray-light">Minimize risk</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Enable Audit Logging and Metrics</h4>
+                            <p className="text-sm text-coreon-gray-light">From day one</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Review Mesh Configuration</h4>
+                            <p className="text-sm text-coreon-gray-light">Before Production Deployment</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Use Versioning and Rollback</h4>
+                            <p className="text-sm text-coreon-gray-light">For All Workflows</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Regularly Test and Validate</h4>
+                            <p className="text-sm text-coreon-gray-light">HITL Thresholds and Approval Rules</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Implement Staged Rollout</h4>
+                            <p className="text-sm text-coreon-gray-light">For Critical Workflows</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Establish Clear Escalation Paths</h4>
+                            <p className="text-sm text-coreon-gray-light">For Exceptions</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="my-8 bg-coreon-navy-dark/50 p-6 rounded-lg border border-coreon-blue/20">
+                      <h3 className="text-xl font-semibold mb-4">Performance Optimization</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Agent Caching</h4>
+                            <p className="text-sm text-coreon-gray-light">For Repetitive Tasks</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Parallel Execution</h4>
+                            <p className="text-sm text-coreon-gray-light">For Independent Workflow Branches</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Asynchronous Processing</h4>
+                            <p className="text-sm text-coreon-gray-light">For Non-blocking Operations</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Resource Allocation</h4>
+                            <p className="text-sm text-coreon-gray-light">Based on Priority Tiers</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Scheduled Scaling</h4>
+                            <p className="text-sm text-coreon-gray-light">For Predictable Workloads</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+                
+                {/* Industry Use Cases */}
+                <section id="use-cases" className="mb-16">
+                  <h2 className="text-2xl font-bold mb-6 text-coreon-blue">Industry Use Cases</h2>
+                  <div className="prose prose-invert max-w-none">
+                    <p className="text-lg">
+                      Coreon is purpose-built for sectors where reliability, transparency, and compliance are mission-critical:
+                    </p>
+                    
+                    <h3>Healthcare</h3>
+                    <ul className="list-disc pl-5 text-sm text-coreon-gray-light">
+                      <li>Patient intake automation with compliance documentation</li>
+                      <li>Clinical triage systems with physician oversight</li>
+                      <li>Medical record analysis and summarization</li>
+                      <li>Treatment protocol adherence verification</li>
+                      <li>Regulatory documentation generation</li>
                     </ul>
                     
-                    <h3>Recommended Practices</h3>
-                    <ul>
-                      <li>Start with conservative agent permissions</li>
-                      <li>Enable audit logging and metrics from day one</li>
-                      <li>Review mesh configuration before production deployment</li>
-                      <li>Use versioning and rollback features for all workflows</li>
-                      <li>Regularly test and validate HITL thresholds and approval rules</li>
-                      <li>Implement staged rollout for critical workflows</li>
-                      <li>Establish clear escalation paths for exceptions</li>
+                    <h3>Finance</h3>
+                    <ul className="list-disc pl-5 text-sm text-coreon-gray-light">
+                      <li>Multi-stage fraud detection with human review thresholds</li>
+                      <li>Audit trail generation for regulatory reporting</li>
+                      <li>Automated compliance checks with exception handling</li>
+                      <li>Risk assessment with explainable decision paths</li>
+                      <li>Regulatory report creation and validation</li>
                     </ul>
                     
-                    <h3>Performance Optimization</h3>
-                    <ul>
-                      <li>Agent caching for repetitive tasks</li>
-                      <li>Parallel execution for independent workflow branches</li>
-                      <li>Asynchronous processing for non-blocking operations</li>
-                      <li>Resource allocation based on priority tiers</li>
-                      <li>Scheduled scaling for predictable workloads</li>
+                    <h3>Insurance</h3>
+                    <ul className="list-disc pl-5 text-sm text-coreon-gray-light">
+                      <li>Multi-agent claim processing workflows</li>
+                      <li>Policy validation and exception handling</li>
+                      <li>Risk assessment with human oversight</li>
+                      <li>Customer communication with compliance checks</li>
+                      <li>Fraud detection with explainable flagging</li>
                     </ul>
                     
-                    <h3>Monitoring and Maintenance</h3>
-                    <ul>
-                      <li>Real-time performance dashboards</li>
-                      <li>Alerting on anomalous behavior</li>
-                      <li>Regular model evaluation and retraining</li>
-                      <li>Automated backup and disaster recovery</li>
-                      <li>Compliance verification scans</li>
+                    <h3>Public Sector</h3>
+                    <ul className="list-disc pl-5 text-sm text-coreon-gray-light">
+                      <li>Document automation with security clearance controls</li>
+                      <li>Eligibility verification with audit trails</li>
+                      <li>Decision support with transparency requirements</li>
+                      <li>Case management with oversight thresholds</li>
+                      <li>Compliance verification for regulatory processes</li>
                     </ul>
                   </div>
                 </section>
                 
-                {/* Technical Appendix */}
-                <section id="appendix" className="mb-16">
-                  <h2 className="text-2xl font-bold mb-6">Technical Appendix</h2>
+                {/* API Reference */}
+                <section id="api" className="mb-16">
+                  <h2 className="text-2xl font-bold mb-6 text-coreon-blue">API Reference</h2>
                   <div className="prose prose-invert max-w-none">
-                    <p>
-                      Coreon provides advanced tooling and documentation for development, operations, and compliance teams.
+                    <p className="text-lg">
+                      Coreon provides a RESTful API for all platform components, allowing for seamless integration and automation.
                     </p>
                     
-                    <h3>Available Resources</h3>
-                    <ul>
-                      <li>REST API Reference with interactive documentation</li>
-                      <li>YAML/JSON Mesh Configuration Templates</li>
-                      <li>Agent Type Definitions and capabilities</li>
-                      <li>Human-in-the-Loop Policy Schemas</li>
-                      <li>Terraform Infrastructure Blueprints</li>
-                      <li>Compliance Integration Guides</li>
-                      <li>Governance Node Staking Documentation</li>
-                      <li>Performance Benchmarking Tools</li>
-                    </ul>
-                    
-                    <h3>Developer Tools</h3>
-                    <ul>
-                      <li>Local development environment</li>
-                      <li>Mesh testing framework</li>
-                      <li>Agent simulation tools</li>
-                      <li>CI/CD pipeline templates</li>
-                      <li>Custom agent development SDK</li>
-                    </ul>
-                    
-                    <h3>Technical Specifications</h3>
-                    <ul>
-                      <li>Supported model types and interfaces</li>
-                      <li>Performance characteristics and limits</li>
-                      <li>Security implementation details</li>
-                      <li>High availability configuration</li>
-                      <li>Data storage and retention options</li>
-                    </ul>
-                    
-                    <h3>Support Resources</h3>
-                    <ul>
-                      <li>Developer community forums</li>
-                      <li>Enterprise support SLAs</li>
-                      <li>Training and certification programs</li>
-                      <li>Implementation consulting services</li>
-                      <li>Regular webinars and knowledge base</li>
-                    </ul>
+                    <div className="my-8 bg-coreon-navy-dark/50 p-6 rounded-lg border border-coreon-blue/20">
+                      <h3 className="text-xl font-semibold mb-4">Available Resources</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">REST API</h4>
+                            <p className="text-sm text-coreon-gray-light">For all platform components</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">GraphQL Endpoints</h4>
+                            <p className="text-sm text-coreon-gray-light">For complex data operations</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">SDKs</h4>
+                            <p className="text-sm text-coreon-gray-light">Python, Go, TypeScript, and Java</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Webhooks</h4>
+                            <p className="text-sm text-coreon-gray-light">Real-time events and notifications</p>
+                          </div>
+                        </div>
+                        
+                        <div className="flex items-start">
+                          <div className="bg-coreon-blue/20 p-2 rounded-lg mr-3">
+                            <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                          </div>
+                          <div>
+                            <h4 className="font-medium">Message Queue Integration</h4>
+                            <p className="text-sm text-coreon-gray-light">(Kafka, RabbitMQ, SQS)</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </section>
               </div>
