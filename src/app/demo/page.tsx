@@ -6,10 +6,6 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import ParticleBackground from '../../components/ParticleBackground';
 import AgentMeshVisualizer from '../../components/demo/AgentMeshVisualizer';
-import AgentControls from '../../components/demo/AgentControls';
-import TaskMonitor from '../../components/demo/TaskMonitor';
-import CompliancePanel from '../../components/demo/CompliancePanel';
-import HumanReviewQueue from '../../components/demo/HumanReviewQueue';
 import MetricsDisplay from '../../components/demo/MetricsDisplay';
 
 // Generate current and upcoming dates
