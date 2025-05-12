@@ -437,7 +437,7 @@ export default function Demo() {
             {/* Left column - Visualization + Controls */}
             <div className="col-span-12 lg:col-span-8 space-y-6">
               {/* Visualization Section */}
-              <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg overflow-hidden">
+              <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg">
                 <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
                   <h2 className="font-bold text-lg">Agent Mesh Visualization</h2>
                   <div className="flex items-center">
@@ -458,7 +458,7 @@ export default function Demo() {
                     </div>
                   </div>
                 </div>
-                <div className="p-4 h-[350px]">
+                <div className="p-4" style={{ height: '320px' }}>
                   <AgentMeshVisualizer 
                     agents={agents} 
                     connections={demoConnections}
@@ -468,7 +468,7 @@ export default function Demo() {
               </div>
               
               {/* Task Monitor Section */}
-              <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg overflow-hidden">
+              <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg">
                 <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
                   <h2 className="font-bold text-lg">Task Monitor</h2>
                   <div className="flex items-center gap-3">
@@ -491,8 +491,74 @@ export default function Demo() {
                     </button>
                   </div>
                 </div>
-                <div className="h-[280px]">
-                  <TaskMonitor tasks={filteredTasks.slice(0, 4)} />
+                <div className="px-4 py-2">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="text-xs text-coreon-gray-light border-b border-coreon-blue/10">
+                        <th className="pb-2 text-left font-medium">Task</th>
+                        <th className="pb-2 text-left font-medium">Status</th>
+                        <th className="pb-2 text-left font-medium">Type</th>
+                        <th className="pb-2 text-left font-medium">Priority</th>
+                        <th className="pb-2 text-left font-medium">Progress</th>
+                        <th className="pb-2 text-left font-medium">Deadline</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredTasks.slice(0, 3).map((task) => (
+                        <tr key={task.id} className="border-b border-coreon-blue/5 hover:bg-coreon-navy-dark/30">
+                          <td className="py-2 pr-2">
+                            <div className="font-medium text-sm truncate max-w-[140px]">{task.name}</div>
+                            <div className="text-xs text-coreon-gray-light">ID: {task.id}</div>
+                          </td>
+                          <td className="py-2 pr-2">
+                            <span className={`px-2 py-0.5 rounded-full text-xs ${
+                              task.status === 'in-progress' ? 'bg-blue-500/20 text-blue-400' :
+                              task.status === 'pending-review' ? 'bg-purple-500/20 text-purple-400' :
+                              task.status === 'completed' ? 'bg-green-500/20 text-green-400' :
+                              'bg-yellow-500/20 text-yellow-400'
+                            }`}>
+                              {task.status === 'in-progress' ? 'In Progress' :
+                               task.status === 'pending-review' ? 'Review' :
+                               task.status === 'completed' ? 'Completed' : 'Queued'}
+                            </span>
+                          </td>
+                          <td className="py-2 pr-2">
+                            <span className="text-xs">{task.type || 'General'}</span>
+                          </td>
+                          <td className="py-2 pr-2">
+                            <div className="flex items-center">
+                              <span className={`inline-block h-2 w-2 rounded-full mr-1 ${
+                                task.priority === 'high' ? 'bg-red-500' :
+                                task.priority === 'medium' ? 'bg-yellow-500' : 'bg-green-500'
+                              }`}></span>
+                              <span className="text-xs capitalize">{task.priority}</span>
+                            </div>
+                          </td>
+                          <td className="py-2 pr-2">
+                            <div className="flex items-center">
+                              <div className="w-16 bg-coreon-navy-dark rounded-full h-1.5 mr-1">
+                                <div 
+                                  className={`h-1.5 rounded-full ${
+                                    task.completion >= 100 ? 'bg-green-500' : 
+                                    task.completion > 50 ? 'bg-blue-500' : 'bg-yellow-500'
+                                  }`}
+                                  style={{ width: `${task.completion}%` }}
+                                ></div>
+                              </div>
+                              <span className="text-xs">{task.completion}%</span>
+                            </div>
+                          </td>
+                          <td className="py-2">
+                            {task.deadline ? (
+                              <div className="text-xs">{new Date(task.deadline).toLocaleDateString()}</div>
+                            ) : (
+                              <span className="text-xs text-coreon-gray-light">-</span>
+                            )}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
               
@@ -505,15 +571,45 @@ export default function Demo() {
             {/* Right column - Controls, Review Queue, Compliance */}
             <div className="col-span-12 lg:col-span-4 space-y-6">
               {/* Agent Controls */}
-              <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg overflow-hidden">
+              <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg">
                 <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
                   <h2 className="font-bold text-lg">Agent Controls</h2>
                   <button className="text-xs text-coreon-blue hover:text-coreon-blue-light">
                     Configure All
                   </button>
                 </div>
-                <div className="p-4 h-[240px]">
-                  <AgentControls agents={agents.slice(0, 2)} />
+                <div className="px-4 py-3">
+                  {agents.slice(0, 2).map((agent) => (
+                    <div 
+                      key={agent.id}
+                      className="bg-coreon-navy-dark/50 rounded-lg border border-coreon-blue/20 overflow-hidden mb-3 last:mb-0"
+                    >
+                      <div className="p-3 flex items-center justify-between">
+                        <div className="flex items-center">
+                          <div className={`h-3 w-3 rounded-full mr-3 ${
+                            agent.status === 'active' ? 'bg-green-400' :
+                            agent.status === 'waiting' ? 'bg-yellow-400' : 'bg-gray-400'
+                          }`}></div>
+                          <div>
+                            <div className="font-medium text-sm">{agent.name}</div>
+                            <div className="flex items-center text-xs text-coreon-gray-light">
+                              <span className={`h-2 w-2 rounded-full mr-1.5 ${
+                                agent.type === 'data-processing' ? 'bg-blue-500' :
+                                agent.type === 'compliance' ? 'bg-red-500' :
+                                agent.type === 'interface' ? 'bg-purple-500' :
+                                agent.type === 'orchestration' ? 'bg-green-500' : 'bg-yellow-500'
+                              }`}></span>
+                              <span className="capitalize">{agent.type.replace('-', ' ')}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-sm">{Math.round(agent.confidence * 100)}%</div>
+                          <div className="text-xs text-coreon-gray-light">Confidence</div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
               
@@ -530,16 +626,68 @@ export default function Demo() {
                     View All
                   </button>
                 </div>
-                <div className="p-4 h-[260px]">
-                  <HumanReviewQueue 
-                    items={reviewItems.slice(0, 1)} 
-                    onApprove={handleApprove}
-                    onReject={handleReject}
-                  />
+                <div className="p-4">
+                  {reviewItems.length === 0 ? (
+                    <div className="text-center py-8 bg-coreon-navy-dark/30 rounded-lg border border-coreon-blue/10">
+                      <div className="text-coreon-gray-light">No items waiting for review</div>
+                    </div>
+                  ) : (
+                    <div 
+                      className={`bg-coreon-navy-dark/30 rounded-lg border ${
+                        reviewItems[0].flagged ? 'border-red-500/30' : 'border-coreon-blue/20'
+                      } overflow-hidden`}
+                    >
+                      <div className="p-3">
+                        <div className="flex justify-between items-start mb-3">
+                          <div>
+                            <div className="flex items-center">
+                              <h3 className="font-medium text-sm">{reviewItems[0].task}</h3>
+                              {reviewItems[0].flagged && (
+                                <span className="ml-2 px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 text-xs">
+                                  Flagged
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex items-center mt-1 text-xs text-coreon-gray-light">
+                              <span className={`h-2 w-2 rounded-full mr-1.5 ${
+                                reviewItems[0].priority === 'high' ? 'bg-red-500' : 'bg-yellow-500'
+                              }`}></span>
+                              <span className="capitalize">{reviewItems[0].priority} Priority</span>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="bg-coreon-navy-dark/50 rounded-lg p-3 mb-3 border border-coreon-blue/10">
+                          <div className="text-xs mb-1">Review Reason:</div>
+                          <div className="text-xs text-coreon-gray-light">{reviewItems[0].reason}</div>
+                        </div>
+                        
+                        <div className="flex justify-between items-center">
+                          <div className="text-xs text-coreon-gray-light">
+                            {reviewItems[0].assignedTo && `Assigned to: ${reviewItems[0].assignedTo}`}
+                          </div>
+                          <div className="flex space-x-2">
+                            <button 
+                              className="px-3 py-1 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 text-xs"
+                              onClick={() => handleReject(reviewItems[0].id)}
+                            >
+                              Reject
+                            </button>
+                            <button 
+                              className="px-3 py-1 rounded-lg bg-green-500/20 text-green-400 hover:bg-green-500/30 text-xs"
+                              onClick={() => handleApprove(reviewItems[0].id)}
+                            >
+                              Approve
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
               
-              {/* Compliance Panel - Collapsed by default */}
+              {/* Compliance Panel - Compact version */}
               <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg">
                 <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
                   <h2 className="font-bold text-lg">Compliance & Audit</h2>
@@ -547,8 +695,19 @@ export default function Demo() {
                     Export Report
                   </button>
                 </div>
-                <div className="p-4 h-[180px]">
-                  <CompliancePanel />
+                <div className="p-4">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-coreon-navy-dark/50 rounded-lg p-3 border border-coreon-blue/10">
+                      <div className="text-xs text-coreon-gray-light mb-1">Audit Logs</div>
+                      <div className="text-xl font-bold">724</div>
+                      <div className="text-xs text-green-400">All compliant</div>
+                    </div>
+                    <div className="bg-coreon-navy-dark/50 rounded-lg p-3 border border-coreon-blue/10">
+                      <div className="text-xs text-coreon-gray-light mb-1">Data Lineage</div>
+                      <div className="text-xl font-bold">100%</div>
+                      <div className="text-xs text-green-400">Fully tracked</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
