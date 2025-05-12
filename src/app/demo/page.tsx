@@ -458,7 +458,7 @@ export default function Demo() {
                     </div>
                   </div>
                 </div>
-                <div className="p-4 h-[400px]">
+                <div className="p-4 h-[350px]">
                   <AgentMeshVisualizer 
                     agents={agents} 
                     connections={demoConnections}
@@ -491,8 +491,8 @@ export default function Demo() {
                     </button>
                   </div>
                 </div>
-                <div className="overflow-hidden">
-                  <TaskMonitor tasks={filteredTasks} />
+                <div className="h-[250px] overflow-hidden">
+                  <TaskMonitor tasks={filteredTasks.slice(0, 4)} />
                 </div>
               </div>
               
@@ -512,8 +512,8 @@ export default function Demo() {
                     Configure All
                   </button>
                 </div>
-                <div className="p-4 max-h-[300px] overflow-y-auto">
-                  <AgentControls agents={agents} />
+                <div className="p-4 h-[200px]">
+                  <AgentControls agents={agents.slice(0, 3)} />
                 </div>
               </div>
               
@@ -530,9 +530,9 @@ export default function Demo() {
                     View All
                   </button>
                 </div>
-                <div className="p-4 max-h-[400px] overflow-y-auto">
+                <div className="p-4 h-[220px] overflow-hidden">
                   <HumanReviewQueue 
-                    items={reviewItems} 
+                    items={reviewItems.slice(0, 1)} 
                     onApprove={handleApprove}
                     onReject={handleReject}
                   />
@@ -547,7 +547,7 @@ export default function Demo() {
                     Export Report
                   </button>
                 </div>
-                <div className="p-4">
+                <div className="p-4 h-[168px] overflow-hidden">
                   <CompliancePanel />
                 </div>
               </div>
