@@ -70,8 +70,8 @@ export default function TaskMonitor({ tasks }: TaskMonitorProps) {
   const sortedTasks = [...tasks].sort((a, b) => {
     switch (sortBy) {
       case 'priority':
-        const priorityOrder = { high: 0, medium: 1, low: 2 };
-        return (priorityOrder[a.priority.toLowerCase()] || 3) - (priorityOrder[b.priority.toLowerCase()] || 3);
+        const priorityOrder: Record<string, number> = { high: 0, medium: 1, low: 2 };
+        return (priorityOrder[a.priority.toLowerCase()] ?? 3) - (priorityOrder[b.priority.toLowerCase()] ?? 3);
       case 'completion':
         return b.completion - a.completion;
       case 'deadline':
