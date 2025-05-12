@@ -40,11 +40,11 @@ export default function AgentControls({ agents }: AgentControlsProps) {
   };
 
   return (
-    <div className="space-y-3">
-      {agents.map((agent) => (
+    <div className="space-y-2">
+      {agents.slice(0, 2).map((agent) => (
         <div 
           key={agent.id}
-          className="bg-coreon-navy-dark/50 rounded-lg border border-coreon-blue/20 overflow-hidden"
+          className="bg-coreon-navy-dark/50 rounded-lg border border-coreon-blue/20 overflow-hidden mb-2"
         >
           <div 
             className="p-3 flex items-center justify-between cursor-pointer hover:bg-coreon-navy-dark/70"
@@ -52,11 +52,11 @@ export default function AgentControls({ agents }: AgentControlsProps) {
           >
             <div className="flex items-center">
               <div className={`h-3 w-3 rounded-full mr-3 ${getStatusColor(agent.status)}`}></div>
-              <div>
-                <div className="font-medium text-sm">{agent.name}</div>
+              <div className="min-w-0">
+                <div className="font-medium text-sm truncate max-w-[160px]">{agent.name}</div>
                 <div className="flex items-center text-xs text-coreon-gray-light">
                   <span className={`h-2 w-2 rounded-full mr-1.5 ${getTypeColor(agent.type)}`}></span>
-                  <span className="capitalize">{agent.type.replace('-', ' ')}</span>
+                  <span className="capitalize truncate">{agent.type.replace('-', ' ')}</span>
                 </div>
               </div>
             </div>
@@ -115,7 +115,6 @@ export default function AgentControls({ agents }: AgentControlsProps) {
               <div className="flex justify-end space-x-2">
                 <button 
                   className="px-3 py-1 rounded text-xs bg-coreon-navy-dark hover:bg-coreon-navy border border-coreon-blue/20"
-                  disabled
                 >
                   Configure
                 </button>
@@ -125,7 +124,6 @@ export default function AgentControls({ agents }: AgentControlsProps) {
                       ? 'bg-yellow-500/20 text-yellow-300 hover:bg-yellow-500/30' 
                       : 'bg-green-500/20 text-green-300 hover:bg-green-500/30'
                   }`}
-                  disabled
                 >
                   {agent.status === 'active' ? 'Pause' : 'Activate'}
                 </button>

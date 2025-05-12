@@ -45,7 +45,7 @@ export default function TaskMonitor({ tasks }: TaskMonitorProps) {
       case 'in-progress':
         return <span className="px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400 text-xs">In Progress</span>;
       case 'pending-review':
-        return <span className="px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-400 text-xs">Pending Review</span>;
+        return <span className="px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-400 text-xs">Review</span>;
       case 'completed':
         return <span className="px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 text-xs">Completed</span>;
       case 'queued':
@@ -58,7 +58,7 @@ export default function TaskMonitor({ tasks }: TaskMonitorProps) {
   const formatDate = (dateString?: string) => {
     if (!dateString) return 'N/A';
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
   
   const formatTime = (dateString?: string) => {
@@ -133,30 +133,30 @@ export default function TaskMonitor({ tasks }: TaskMonitorProps) {
           </tr>
         </thead>
         <tbody>
-          {sortedTasks.map((task) => (
+          {sortedTasks.slice(0, 3).map((task) => (
             <tr key={task.id} className="border-b border-coreon-blue/5 hover:bg-coreon-navy-dark/30">
-              <td className="py-3 pr-4">
-                <div className="font-medium text-sm">{task.name}</div>
-                <div className="text-xs text-coreon-gray-light">ID: {task.id}</div>
+              <td className="py-2 pr-2">
+                <div className="font-medium text-sm truncate max-w-[120px]">{task.name}</div>
+                <div className="text-xs text-coreon-gray-light">{task.id}</div>
               </td>
-              <td className="py-3 pr-4">
+              <td className="py-2 pr-2">
                 {getStatusBadge(task.status)}
               </td>
-              <td className="py-3 pr-4">
+              <td className="py-2 pr-2">
                 <div className="flex items-center">
                   <span className="inline-block h-2 w-2 rounded-full mr-2 bg-coreon-blue/70"></span>
-                  <span className="text-sm">{task.type || 'General'}</span>
+                  <span className="text-sm truncate max-w-[80px]">{task.type || 'General'}</span>
                 </div>
               </td>
-              <td className="py-3 pr-4">
+              <td className="py-2 pr-2">
                 <div className="flex items-center">
                   <span className={`inline-block h-2 w-2 rounded-full mr-2 ${getPriorityColor(task.priority)}`}></span>
                   <span className="text-sm capitalize">{task.priority}</span>
                 </div>
               </td>
-              <td className="py-3 pr-4">
+              <td className="py-2 pr-2">
                 <div className="flex items-center">
-                  <div className="w-32 bg-coreon-navy-dark rounded-full h-1.5 mr-2">
+                  <div className="w-16 bg-coreon-navy-dark rounded-full h-1.5 mr-2">
                     <div 
                       className={`h-1.5 rounded-full ${
                         task.completion >= 100 
@@ -171,7 +171,7 @@ export default function TaskMonitor({ tasks }: TaskMonitorProps) {
                   <span className="text-xs">{task.completion}%</span>
                 </div>
               </td>
-              <td className="py-3 pr-4">
+              <td className="py-2">
                 {task.deadline ? (
                   <div>
                     <div className="text-sm">{formatDate(task.deadline)}</div>
