@@ -23,11 +23,10 @@ interface AgentMeshVisualizerProps {
 
 export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVisualizerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const particles = useRef<{ x: number; y: number; size: number; vx: number; vy: number; color: string; opacity: number }[]>([]);
   const animationFrameId = useRef<number>(0);
   const agentPositions = useRef<Map<string, { x: number; y: number; vx: number; vy: number; size: number; pulsePhase: number }>>(new Map());
 
-  // Enhanced colors for different agent types
+  // Professional color palette for different agent types
   const typeColors: Record<string, string> = {
     'data-processing': '#3498db',
     'compliance': '#e74c3c',
@@ -36,9 +35,9 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
     'storage': '#f39c12',
   };
 
-  // Glowing effect parameters
-  const glowIntensity = 0.4;
-  const pulseSpeed = 0.03;
+  // Subtle effects parameters
+  const glowIntensity = 0.2;
+  const pulseSpeed = 0.02;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -59,65 +58,71 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
       if (agentPositions.current.size === 0) {
         initializeAgentPositions();
       }
-      
-      // Initialize background particles
-      initializeParticles();
     };
 
-    // Initialize random positions for agents
+    // Initialize positions for agents
     const initializeAgentPositions = () => {
       agentPositions.current.clear();
       
-      // Place agents in a circular arrangement initially
+      // Place agents in a structured arrangement initially
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
-      const radius = Math.min(canvas.width, canvas.height) * 0.35;
       
-      agents.forEach((agent, index) => {
-        const angle = (index / agents.length) * Math.PI * 2;
+      // Place orchestration agents in the center
+      const orchestrators = agents.filter(agent => agent.type === 'orchestration');
+      const otherAgents = agents.filter(agent => agent.type !== 'orchestration');
+      
+      // Position orchestrators in the center
+      orchestrators.forEach((agent, index) => {
+        const angle = (index / Math.max(1, orchestrators.length)) * Math.PI * 2;
+        const radius = Math.min(canvas.width, canvas.height) * 0.15;
         const x = centerX + Math.cos(angle) * radius;
         const y = centerY + Math.sin(angle) * radius;
         
         agentPositions.current.set(agent.id, {
           x,
           y,
-          vx: (Math.random() - 0.5) * 0.2,
-          vy: (Math.random() - 0.5) * 0.2,
-          size: agent.type === 'orchestration' ? 30 : 25,
+          vx: 0,
+          vy: 0,
+          size: 22,
           pulsePhase: Math.random() * Math.PI * 2
         });
       });
-    };
-    
-    // Initialize background particles
-    const initializeParticles = () => {
-      particles.current = [];
-      const particleCount = Math.floor((canvas.width * canvas.height) / 20000);
       
-      for (let i = 0; i < particleCount; i++) {
-        particles.current.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          size: Math.random() * 1.5 + 0.5,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
-          color: '#30C6FF',
-          opacity: Math.random() * 0.3 + 0.1
+      // Position other agents in an outer circle
+      otherAgents.forEach((agent, index) => {
+        const angle = (index / otherAgents.length) * Math.PI * 2;
+        const radius = Math.min(canvas.width, canvas.height) * 0.35;
+        const x = centerX + Math.cos(angle) * radius;
+        const y = centerY + Math.sin(angle) * radius;
+        
+        agentPositions.current.set(agent.id, {
+          x,
+          y,
+          vx: 0,
+          vy: 0,
+          size: 18,
+          pulsePhase: Math.random() * Math.PI * 2
         });
-      }
+      });
     };
 
     // Draw the agent mesh
     const draw = () => {
       if (!ctx || !canvas) return;
       
-      // Clear canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Clear canvas with subtle gradient background
+      const gradient = ctx.createRadialGradient(
+        canvas.width / 2, canvas.height / 2, 0,
+        canvas.width / 2, canvas.height / 2, canvas.width * 0.8
+      );
+      gradient.addColorStop(0, 'rgba(10, 20, 40, 0.05)');
+      gradient.addColorStop(1, 'rgba(10, 20, 40, 0.2)');
       
-      // Draw background particles
-      drawBackgroundParticles();
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // Update agent positions
+      // Update agent positions with gentle movement
       updatePositions();
       
       // Draw connections first (so they appear behind agents)
@@ -129,35 +134,12 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
       // Continue animation
       animationFrameId.current = requestAnimationFrame(draw);
     };
-    
-    // Draw background particles
-    const drawBackgroundParticles = () => {
-      if (!ctx || !canvas) return;
-      
-      particles.current.forEach(particle => {
-        // Move particles
-        particle.x += particle.vx;
-        particle.y += particle.vy;
-        
-        // Wrap around edges
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.y > canvas.height) particle.y = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-        
-        // Draw particle
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(48, 198, 255, ${particle.opacity})`;
-        ctx.fill();
-      });
-    };
 
-    // Update agent positions with enhanced physics
+    // Update agent positions with subtle physics
     const updatePositions = () => {
       if (!canvas) return;
       
-      // Apply forces between agents (repulsion)
+      // Apply very gentle forces between agents
       const positions = Array.from(agentPositions.current.entries());
       
       for (let i = 0; i < positions.length; i++) {
@@ -167,30 +149,27 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
         // Update pulse phase
         pos1.pulsePhase = (pos1.pulsePhase + pulseSpeed) % (Math.PI * 2);
         
-        // Boundary forces - stronger near edges
-        const margin = 70;
-        const boundaryForce = 0.05;
+        // Very subtle boundary forces
+        const margin = 50;
+        const boundaryForce = 0.02;
         
         if (pos1.x < margin) pos1.vx += boundaryForce * (1 - pos1.x / margin);
         if (pos1.x > canvas.width - margin) pos1.vx -= boundaryForce * (1 - (canvas.width - pos1.x) / margin);
         if (pos1.y < margin) pos1.vy += boundaryForce * (1 - pos1.y / margin);
         if (pos1.y > canvas.height - margin) pos1.vy -= boundaryForce * (1 - (canvas.height - pos1.y) / margin);
         
-        // Agent repulsion - different types repel more strongly
+        // Very subtle agent repulsion
         for (let j = i + 1; j < positions.length; j++) {
           const [id2, pos2] = positions[j];
-          const agent2 = agents.find(a => a.id === id2);
           
           const dx = pos2.x - pos1.x;
           const dy = pos2.y - pos1.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
           
-          // Stronger repulsion between agents of same type
-          const repulsionMultiplier = agent1 && agent2 && agent1.type === agent2.type ? 1.5 : 1;
-          const minDistance = pos1.size + pos2.size + 20;
+          const minDistance = pos1.size + pos2.size + 30;
           
           if (distance < minDistance) {
-            const force = 0.05 * repulsionMultiplier / Math.max(0.1, distance / minDistance);
+            const force = 0.01 / Math.max(0.1, distance / minDistance);
             const fx = dx / distance * force;
             const fy = dy / distance * force;
             
@@ -202,7 +181,7 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
         }
       }
       
-      // Apply connection forces (attraction)
+      // Apply connection forces (very subtle attraction)
       connections.forEach(conn => {
         const pos1 = agentPositions.current.get(conn.from);
         const pos2 = agentPositions.current.get(conn.to);
@@ -216,7 +195,7 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
           const optimalDistance = 150;
           
           if (distance > optimalDistance) {
-            const force = 0.01 * (distance - optimalDistance) / 100;
+            const force = 0.002 * (distance - optimalDistance) / 100;
             const fx = dx / distance * force;
             const fy = dy / distance * force;
             
@@ -224,32 +203,22 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
             pos1.vy += fy;
             pos2.vx -= fx;
             pos2.vy -= fy;
-          } else if (distance < optimalDistance * 0.7) {
-            // Slight repulsion if too close
-            const force = 0.005;
-            const fx = dx / distance * force;
-            const fy = dy / distance * force;
-            
-            pos1.vx -= fx;
-            pos1.vy -= fy;
-            pos2.vx += fx;
-            pos2.vy += fy;
           }
         }
       });
       
-      // Update positions
+      // Update positions with strong damping for stability
       Array.from(agentPositions.current.entries()).forEach(([id, pos]) => {
-        // Apply velocity with damping
-        pos.vx *= 0.95;
-        pos.vy *= 0.95;
+        // Apply velocity with strong damping for subtle movement
+        pos.vx *= 0.9;
+        pos.vy *= 0.9;
         
         pos.x += pos.vx;
         pos.y += pos.vy;
       });
     };
 
-    // Draw connections between agents with enhanced visuals
+    // Draw connections between agents
     const drawConnections = () => {
       if (!ctx) return;
       
@@ -273,7 +242,7 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
             const endX = pos2.x - Math.cos(angle) * pos2.size;
             const endY = pos2.y - Math.sin(angle) * pos2.size;
             
-            // Draw connection line with glow effect
+            // Draw connection line
             ctx.beginPath();
             ctx.moveTo(startX, startY);
             ctx.lineTo(endX, endY);
@@ -286,24 +255,18 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
             gradient.addColorStop(0, color1);
             gradient.addColorStop(1, color2);
             
-            // Glow effect
-            ctx.shadowColor = color1;
-            ctx.shadowBlur = 5;
+            // Subtle line style
             ctx.strokeStyle = gradient;
-            ctx.lineWidth = 1.5;
-            ctx.globalAlpha = 0.7;
+            ctx.lineWidth = 1;
+            ctx.globalAlpha = 0.6;
             ctx.stroke();
-            
-            // Reset shadow for other drawings
-            ctx.shadowBlur = 0;
             ctx.globalAlpha = 1;
             
-            // Draw flow particles along the connection
-            // Only draw particles if agents are far enough apart
-            if (distance > 60) {
+            // Draw data flow indicators (subtle dots)
+            if (distance > 60 && (agent1.status === 'active' || agent2.status === 'active')) {
               const now = Date.now() / 1000;
-              const particleCount = 3;
-              const particleSpeed = 0.5; // Lower is faster
+              const particleCount = 2;
+              const particleSpeed = 1.5; // Lower is faster
               
               for (let i = 0; i < particleCount; i++) {
                 // Calculate position along the line
@@ -311,16 +274,11 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
                 const x = startX + (endX - startX) * offset;
                 const y = startY + (endY - startY) * offset;
                 
-                // Draw glowing particle
+                // Draw subtle dot
                 ctx.beginPath();
-                ctx.arc(x, y, 2, 0, Math.PI * 2);
-                ctx.fillStyle = '#30C6FF';
-                ctx.shadowColor = '#30C6FF';
-                ctx.shadowBlur = 8;
+                ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+                ctx.fillStyle = '#ffffff';
                 ctx.fill();
-                
-                // Reset shadow
-                ctx.shadowBlur = 0;
               }
             }
           }
@@ -328,7 +286,7 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
       });
     };
 
-    // Draw the agents with enhanced visuals
+    // Draw the agents with professional appearance
     const drawAgents = () => {
       if (!ctx) return;
       
@@ -340,49 +298,46 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
         const color = typeColors[agent.type] || '#ffffff';
         const isActive = agent.status === 'active';
         
-        // Calculate pulse effect
-        const pulseScale = isActive ? 1 + Math.sin(pos.pulsePhase) * 0.1 : 1;
+        // Subtle pulse effect for active agents
+        const pulseScale = isActive ? 1 + Math.sin(pos.pulsePhase) * 0.05 : 1;
         const pulseRadius = radius * pulseScale;
         
-        // Draw outer glow for active agents
+        // Draw subtle outer glow for active agents
         if (isActive) {
           const gradient = ctx.createRadialGradient(
             pos.x, pos.y, radius * 0.8,
-            pos.x, pos.y, radius * 2
+            pos.x, pos.y, radius * 1.5
           );
           gradient.addColorStop(0, `rgba(${hexToRgb(color)}, ${glowIntensity})`);
           gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
           
           ctx.beginPath();
-          ctx.arc(pos.x, pos.y, radius * 2, 0, Math.PI * 2);
+          ctx.arc(pos.x, pos.y, radius * 1.5, 0, Math.PI * 2);
           ctx.fillStyle = gradient;
           ctx.fill();
         }
         
-        // Draw agent circle
+        // Draw agent circle with clean design
         ctx.beginPath();
         ctx.arc(pos.x, pos.y, pulseRadius, 0, Math.PI * 2);
         
-        // Fill based on status
-        if (isActive) {
-          const gradient = ctx.createRadialGradient(
-            pos.x, pos.y, 0,
-            pos.x, pos.y, pulseRadius
-          );
-          gradient.addColorStop(0, color);
-          gradient.addColorStop(0.7, color);
-          gradient.addColorStop(1, `rgba(${hexToRgb(color)}, 0.3)`);
-          
-          ctx.fillStyle = gradient;
-          ctx.fill();
-        }
+        // Fill with subtle gradient
+        const gradient = ctx.createRadialGradient(
+          pos.x, pos.y, 0,
+          pos.x, pos.y, pulseRadius
+        );
+        gradient.addColorStop(0, isActive ? color : `rgba(${hexToRgb(color)}, 0.7)`);
+        gradient.addColorStop(1, `rgba(${hexToRgb(color)}, ${isActive ? 0.8 : 0.5})`);
+        
+        ctx.fillStyle = gradient;
+        ctx.fill();
         
         // Draw border
         ctx.strokeStyle = color;
-        ctx.lineWidth = isActive ? 2 : 1;
+        ctx.lineWidth = isActive ? 1.5 : 0.5;
         ctx.stroke();
         
-        // Draw confidence indicator
+        // Draw confidence indicator - clean arc
         const confidenceRadius = pulseRadius * 0.85;
         ctx.beginPath();
         ctx.arc(
@@ -392,21 +347,21 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
           -Math.PI / 2, 
           Math.PI * 2 * agent.confidence - Math.PI / 2
         );
-        ctx.strokeStyle = '#30C6FF';
-        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
         ctx.stroke();
         
-        // Draw agent type icon in center
+        // Draw agent type icon - simple and professional
         drawAgentTypeIcon(ctx, agent.type, pos.x, pos.y, pulseRadius * 0.4);
         
-        // Draw agent name with background
+        // Draw agent name with clean label
         const nameY = pos.y + pulseRadius + 15;
         const name = agent.name;
-        ctx.font = '10px Arial';
+        ctx.font = '10px Inter, Arial, sans-serif';
         const textWidth = ctx.measureText(name).width;
         
-        // Name background
-        ctx.fillStyle = 'rgba(5, 10, 32, 0.7)';
+        // Name background - subtle
+        ctx.fillStyle = 'rgba(10, 20, 40, 0.7)';
         ctx.fillRect(pos.x - textWidth / 2 - 4, nameY - 8, textWidth + 8, 16);
         
         // Name text
@@ -416,83 +371,72 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
       });
     };
     
-    // Draw an icon representing the agent type
+    // Draw a simple icon representing the agent type
     const drawAgentTypeIcon = (ctx: CanvasRenderingContext2D, type: string, x: number, y: number, size: number) => {
       ctx.fillStyle = '#ffffff';
       ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 1;
       
       switch (type) {
         case 'data-processing':
-          // Database icon
+          // Database icon - simplified
           ctx.beginPath();
-          ctx.ellipse(x, y - size * 0.7, size * 0.6, size * 0.3, 0, 0, Math.PI * 2);
+          ctx.ellipse(x, y - size * 0.5, size * 0.6, size * 0.2, 0, 0, Math.PI * 2);
           ctx.stroke();
           
           ctx.beginPath();
-          ctx.ellipse(x, y + size * 0.7, size * 0.6, size * 0.3, 0, 0, Math.PI * 2);
+          ctx.ellipse(x, y + size * 0.5, size * 0.6, size * 0.2, 0, 0, Math.PI * 2);
+          ctx.stroke();
+          
+          // Vertical lines
+          ctx.beginPath();
+          ctx.moveTo(x - size * 0.6, y - size * 0.5);
+          ctx.lineTo(x - size * 0.6, y + size * 0.5);
           ctx.stroke();
           
           ctx.beginPath();
-          ctx.moveTo(x - size * 0.6, y - size * 0.7);
-          ctx.lineTo(x - size * 0.6, y + size * 0.7);
-          ctx.stroke();
-          
-          ctx.beginPath();
-          ctx.moveTo(x + size * 0.6, y - size * 0.7);
-          ctx.lineTo(x + size * 0.6, y + size * 0.7);
+          ctx.moveTo(x + size * 0.6, y - size * 0.5);
+          ctx.lineTo(x + size * 0.6, y + size * 0.5);
           ctx.stroke();
           break;
           
         case 'compliance':
-          // Shield icon
+          // Shield icon - simplified
           ctx.beginPath();
-          ctx.moveTo(x, y - size);
-          ctx.lineTo(x + size * 0.8, y - size * 0.5);
-          ctx.lineTo(x + size * 0.8, y + size * 0.3);
-          ctx.quadraticCurveTo(x + size * 0.8, y + size, x, y + size * 0.7);
-          ctx.quadraticCurveTo(x - size * 0.8, y + size, x - size * 0.8, y + size * 0.3);
-          ctx.lineTo(x - size * 0.8, y - size * 0.5);
+          ctx.moveTo(x, y - size * 0.7);
+          ctx.lineTo(x + size * 0.6, y - size * 0.3);
+          ctx.lineTo(x + size * 0.6, y + size * 0.3);
+          ctx.quadraticCurveTo(x + size * 0.6, y + size * 0.7, x, y + size * 0.5);
+          ctx.quadraticCurveTo(x - size * 0.6, y + size * 0.7, x - size * 0.6, y + size * 0.3);
+          ctx.lineTo(x - size * 0.6, y - size * 0.3);
           ctx.closePath();
-          ctx.stroke();
-          
-          // Checkmark inside shield
-          ctx.beginPath();
-          ctx.moveTo(x - size * 0.3, y);
-          ctx.lineTo(x, y + size * 0.3);
-          ctx.lineTo(x + size * 0.5, y - size * 0.3);
           ctx.stroke();
           break;
           
         case 'interface':
-          // User icon
+          // User interface icon - simplified
           ctx.beginPath();
-          ctx.arc(x, y - size * 0.2, size * 0.5, 0, Math.PI * 2);
+          ctx.arc(x, y - size * 0.2, size * 0.4, 0, Math.PI * 2);
           ctx.stroke();
           
+          // Body
           ctx.beginPath();
-          ctx.moveTo(x - size * 0.7, y + size * 0.8);
-          ctx.quadraticCurveTo(x, y + size * 1.2, x + size * 0.7, y + size * 0.8);
-          ctx.quadraticCurveTo(x + size * 0.5, y + size * 0.4, x + size * 0.3, y + size * 0.3);
-          ctx.stroke();
-          
-          ctx.beginPath();
-          ctx.moveTo(x - size * 0.3, y + size * 0.3);
-          ctx.quadraticCurveTo(x - size * 0.5, y + size * 0.4, x - size * 0.7, y + size * 0.8);
+          ctx.moveTo(x - size * 0.4, y + size * 0.7);
+          ctx.quadraticCurveTo(x, y + size * 0.4, x + size * 0.4, y + size * 0.7);
           ctx.stroke();
           break;
           
         case 'orchestration':
-          // Network/orchestration icon
+          // Network icon - simplified
           ctx.beginPath();
           ctx.arc(x, y, size * 0.3, 0, Math.PI * 2);
           ctx.stroke();
           
-          // Connecting lines
+          // Connection lines
           const angles = [0, Math.PI * 2/3, Math.PI * 4/3];
           angles.forEach(angle => {
-            const endX = x + Math.cos(angle) * size;
-            const endY = y + Math.sin(angle) * size;
+            const endX = x + Math.cos(angle) * size * 0.7;
+            const endY = y + Math.sin(angle) * size * 0.7;
             
             ctx.beginPath();
             ctx.moveTo(x + Math.cos(angle) * size * 0.3, y + Math.sin(angle) * size * 0.3);
@@ -500,26 +444,26 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
             ctx.stroke();
             
             ctx.beginPath();
-            ctx.arc(endX, endY, size * 0.2, 0, Math.PI * 2);
+            ctx.arc(endX, endY, size * 0.15, 0, Math.PI * 2);
             ctx.stroke();
           });
           break;
           
         case 'storage':
-          // Memory/storage icon
+          // Storage icon - simplified
           ctx.beginPath();
-          ctx.rect(x - size * 0.7, y - size * 0.7, size * 1.4, size * 1.4);
+          ctx.rect(x - size * 0.6, y - size * 0.6, size * 1.2, size * 1.2);
           ctx.stroke();
           
-          // Internal grid
+          // Internal lines
           ctx.beginPath();
-          ctx.moveTo(x - size * 0.7, y);
-          ctx.lineTo(x + size * 0.7, y);
+          ctx.moveTo(x - size * 0.6, y);
+          ctx.lineTo(x + size * 0.6, y);
           ctx.stroke();
           
           ctx.beginPath();
-          ctx.moveTo(x, y - size * 0.7);
-          ctx.lineTo(x, y + size * 0.7);
+          ctx.moveTo(x, y - size * 0.6);
+          ctx.lineTo(x, y + size * 0.6);
           ctx.stroke();
           break;
           
