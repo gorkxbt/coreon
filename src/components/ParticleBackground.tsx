@@ -18,7 +18,7 @@ interface FloatingElement {
   opacity: number;
   speed: number;
   angle: number;
-  shape: 'circle' | 'square' | 'triangle' | 'hexagon' | 'diamond' | 'dot';
+  shape: 'circle' | 'square' | 'triangle' | 'hexagon' | 'diamond' | 'dot' | 'logo';
   rotationSpeed: number;
   currentRotation: number;
   color: string;
@@ -54,8 +54,8 @@ export default function ParticleBackground() {
   const elementColors = [
     'rgba(64, 145, 220, 0.7)',   // Blue
     'rgba(74, 160, 200, 0.7)',   // Light blue
+    'rgba(48, 198, 255, 0.7)',   // Coreon blue (#30C6FF)
     'rgba(100, 120, 190, 0.7)',  // Indigo
-    'rgba(120, 100, 180, 0.7)',  // Purple
     'rgba(80, 170, 180, 0.7)',   // Teal
   ];
 
@@ -114,18 +114,22 @@ export default function ParticleBackground() {
       // Create floating elements - fewer and more subtle
       floatingElementsRef.current = [];
       const elementCount = Math.floor((canvas.width * canvas.height) / 50000);
-      const shapes: ('circle' | 'square' | 'triangle' | 'hexagon' | 'diamond' | 'dot')[] = 
-        ['circle', 'square', 'diamond', 'dot', 'dot', 'dot']; // More dots for subtlety
+      // Shapes with logo added to the mix
+      const shapes: ('circle' | 'square' | 'triangle' | 'hexagon' | 'diamond' | 'dot' | 'logo')[] = 
+        ['circle', 'square', 'diamond', 'dot', 'dot', 'dot', 'logo']; 
       
       for (let i = 0; i < elementCount; i++) {
+        // Determine if this element will be a logo (approx 1 in 10 elements)
+        const shape = i % 10 === 0 ? 'logo' : shapes[Math.floor(Math.random() * shapes.length)];
+        
         floatingElementsRef.current.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          size: Math.random() * 4 + 1, // Smaller elements
-          opacity: Math.random() * 0.2 + 0.1, // More transparent
+          size: shape === 'logo' ? 15 + Math.random() * 10 : Math.random() * 4 + 1, // Logos are larger
+          opacity: shape === 'logo' ? 0.2 + Math.random() * 0.1 : Math.random() * 0.2 + 0.1,
           speed: (Math.random() - 0.5) * 0.2,
           angle: Math.random() * Math.PI * 2,
-          shape: shapes[Math.floor(Math.random() * shapes.length)],
+          shape,
           rotationSpeed: (Math.random() - 0.5) * 0.005,
           currentRotation: Math.random() * Math.PI * 2,
           color: elementColors[Math.floor(Math.random() * elementColors.length)]
@@ -161,6 +165,7 @@ export default function ParticleBackground() {
       ctx.translate(element.x, element.y);
       ctx.rotate(element.currentRotation);
       ctx.fillStyle = element.color;
+      ctx.globalAlpha = element.opacity;
       
       switch (element.shape) {
         case 'circle':
@@ -210,6 +215,37 @@ export default function ParticleBackground() {
           ctx.arc(0, 0, element.size / 2, 0, Math.PI * 2);
           ctx.fill();
           break;
+          
+        case 'logo':
+          // Draw Coreon logo
+          const size = element.size * 2;
+          
+          // Background circle
+          ctx.beginPath();
+          ctx.fillStyle = '#081136';
+          ctx.arc(0, 0, size/2, 0, Math.PI * 2);
+          ctx.fill();
+          
+          // Outer ring
+          ctx.beginPath();
+          ctx.arc(0, 0, size * 0.3, 0, Math.PI * 2);
+          ctx.strokeStyle = '#30C6FF';
+          ctx.lineWidth = size * 0.1;
+          ctx.stroke();
+          
+          // Inner arc (3/4 circle)
+          ctx.beginPath();
+          ctx.arc(0, 0, size * 0.15, 0, 1.5 * Math.PI);
+          ctx.strokeStyle = '#30C6FF';
+          ctx.lineWidth = size * 0.1;
+          ctx.stroke();
+          
+          // Small dot
+          ctx.beginPath();
+          ctx.arc(-size * 0.25, 0, size * 0.05, 0, Math.PI * 2);
+          ctx.fillStyle = '#30C6FF';
+          ctx.fill();
+          break;
       }
       
       ctx.restore();
@@ -237,7 +273,7 @@ export default function ParticleBackground() {
       // Create gradient for data flow effect
       const gradient = ctx.createLinearGradient(line.x1, line.y1, currentX, currentY);
       gradient.addColorStop(0, `rgba(64, 145, 220, ${line.opacity * 0.5})`);
-      gradient.addColorStop(0.5, `rgba(100, 180, 220, ${line.opacity})`);
+      gradient.addColorStop(0.5, `rgba(48, 198, 255, ${line.opacity})`); // Coreon blue
       gradient.addColorStop(1, `rgba(64, 145, 220, ${line.opacity * 0.5})`);
       
       ctx.strokeStyle = gradient;
@@ -252,7 +288,7 @@ export default function ParticleBackground() {
         
         ctx.beginPath();
         ctx.arc(pulseX, pulseY, line.width * 2, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(120, 200, 255, ${line.opacity * 1.5})`;
+        ctx.fillStyle = `rgba(48, 198, 255, ${line.opacity * 1.5})`; // Coreon blue
         ctx.fill();
       }
     };
@@ -274,7 +310,7 @@ export default function ParticleBackground() {
       const gridSize = 40;
       const gridOpacity = 0.05;
       
-      ctx.strokeStyle = `rgba(100, 150, 200, ${gridOpacity})`;
+      ctx.strokeStyle = `rgba(48, 198, 255, ${gridOpacity})`; // Coreon blue for grid
       ctx.lineWidth = 0.5;
       
       // Draw vertical grid lines
@@ -319,9 +355,9 @@ export default function ParticleBackground() {
         // Fill with gradient - very subtle
         const waveGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
         const alpha = 0.08 - (waveIndex * 0.02);
-        waveGradient.addColorStop(0, `rgba(64, 145, 220, 0)`);
-        waveGradient.addColorStop(0.8, `rgba(64, 145, 220, ${alpha})`);
-        waveGradient.addColorStop(1, `rgba(64, 145, 220, ${alpha * 1.5})`);
+        waveGradient.addColorStop(0, `rgba(48, 198, 255, 0)`); // Coreon blue
+        waveGradient.addColorStop(0.8, `rgba(48, 198, 255, ${alpha})`);
+        waveGradient.addColorStop(1, `rgba(48, 198, 255, ${alpha * 1.5})`);
         
         ctx.fillStyle = waveGradient;
         ctx.fill();

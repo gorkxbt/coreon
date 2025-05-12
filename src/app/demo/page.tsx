@@ -10,6 +10,7 @@ import AgentControls from '../../components/demo/AgentControls';
 import TaskMonitor from '../../components/demo/TaskMonitor';
 import CompliancePanel from '../../components/demo/CompliancePanel';
 import HumanReviewQueue from '../../components/demo/HumanReviewQueue';
+import MetricsDisplay from '../../components/demo/MetricsDisplay';
 
 // Enterprise demo data with realistic use cases
 const demoAgents = [
@@ -255,14 +256,15 @@ export default function Demo() {
       <Header />
       
       <motion.div
-        className="pt-32 pb-20"
+        className="pt-28 pb-20"
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoaded ? 1 : 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="container-custom">
-          <div className="mb-8">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+        <div className="container-custom max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Top section with title and controls */}
+          <div className="mb-8 bg-coreon-navy/30 backdrop-blur-md p-6 rounded-xl border border-coreon-blue/20 shadow-lg">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold mb-2 gradient-text">
                   Enterprise AI Orchestration
@@ -272,7 +274,7 @@ export default function Demo() {
                 </p>
               </div>
               
-              <div className="mt-4 md:mt-0 flex items-center space-x-3">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                 <div className="flex items-center border border-coreon-blue/30 rounded-lg px-4 py-2 bg-coreon-navy/50">
                   <span className="text-sm text-coreon-gray-light mr-2">Instance:</span>
                   <select 
@@ -291,15 +293,73 @@ export default function Demo() {
                   onClick={toggleDemo} 
                   className={`px-4 py-2 rounded-lg text-sm font-medium flex items-center ${demoRunning ? 'bg-red-500/20 text-red-300 hover:bg-red-500/30' : 'bg-green-500/20 text-green-300 hover:bg-green-500/30'} transition-colors`}
                 >
-                  <span className={`inline-block w-2 h-2 rounded-full mr-2 ${demoRunning ? 'bg-red-400' : 'bg-green-400'}`}></span>
+                  <span className={`inline-block w-2 h-2 rounded-full mr-2 ${demoRunning ? 'bg-red-400 animate-pulse' : 'bg-green-400'}`}></span>
                   {demoRunning ? 'Pause Demo' : 'Resume Demo'}
                 </button>
               </div>
             </div>
+
+            {/* System stats - New row */}
+            <div className="grid grid-cols-4 gap-4 mt-6 pt-6 border-t border-coreon-blue/10">
+              <div className="col-span-4 sm:col-span-1">
+                <div className="flex items-center">
+                  <div className="w-10 h-10 flex items-center justify-center rounded-full bg-green-500/10 mr-3">
+                    <span className="inline-block w-2 h-2 rounded-full bg-green-400"></span>
+                  </div>
+                  <div>
+                    <div className="text-sm text-coreon-gray-light">System Status</div>
+                    <div className="font-medium">Operational</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="col-span-4 sm:col-span-1">
+                <div className="flex items-center">
+                  <div className="w-10 h-10 flex items-center justify-center rounded-full bg-coreon-blue/10 mr-3">
+                    <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="text-sm text-coreon-gray-light">CPU Usage</div>
+                    <div className="font-medium">24%</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="col-span-4 sm:col-span-1">
+                <div className="flex items-center">
+                  <div className="w-10 h-10 flex items-center justify-center rounded-full bg-purple-500/10 mr-3">
+                    <svg className="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="text-sm text-coreon-gray-light">Active Agents</div>
+                    <div className="font-medium">{agents.filter(a => a.status === 'active').length}/{agents.length}</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="col-span-4 sm:col-span-1">
+                <div className="flex items-center">
+                  <div className="w-10 h-10 flex items-center justify-center rounded-full bg-yellow-500/10 mr-3">
+                    <svg className="w-5 h-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="text-sm text-coreon-gray-light">Memory</div>
+                    <div className="font-medium">2.4 GB / 8 GB</div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            <div className="lg:col-span-2 bg-coreon-navy/50 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg overflow-hidden">
+          <div className="grid grid-cols-12 gap-6 mb-8">
+            {/* Main visualization */}
+            <div className="col-span-12 lg:col-span-8 bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg overflow-hidden">
               <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
                 <h2 className="font-bold text-lg">Agent Mesh Visualization</h2>
                 <div className="flex items-center">
@@ -310,7 +370,7 @@ export default function Demo() {
                   </div>
                 </div>
               </div>
-              <div className="p-4 h-[400px]">
+              <div className="p-4 h-[500px]">
                 <AgentMeshVisualizer 
                   agents={agents} 
                   connections={demoConnections}
@@ -318,84 +378,52 @@ export default function Demo() {
               </div>
             </div>
             
-            <div>
-              <div className="bg-coreon-navy/50 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg mb-6">
-                <div className="p-4 border-b border-coreon-blue/20">
-                  <h2 className="font-bold text-lg">Agent Controls</h2>
-                </div>
-                <div className="p-4">
-                  <AgentControls agents={agents} />
-                </div>
-              </div>
-              
-              <div className="bg-coreon-navy/50 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg">
+            {/* Agent Controls */}
+            <div className="col-span-12 lg:col-span-4">
+              <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg overflow-hidden">
                 <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
-                  <h2 className="font-bold text-lg">System Status</h2>
-                  <div className="flex items-center">
-                    <span className="inline-block w-2 h-2 rounded-full bg-green-400 mr-2"></span>
-                    <span className="text-xs text-green-400">Operational</span>
-                  </div>
+                  <h2 className="font-bold text-lg">Agent Controls</h2>
+                  <button className="text-xs text-coreon-blue hover:text-coreon-blue-light">
+                    Configure All
+                  </button>
                 </div>
-                <div className="p-4">
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="text-coreon-gray-light">CPU Usage</span>
-                        <span>24%</span>
-                      </div>
-                      <div className="h-2 bg-coreon-navy-dark rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-coreon-blue to-coreon-blue-light w-1/4 rounded-full"></div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="text-coreon-gray-light">Memory</span>
-                        <span>2.4 GB / 8 GB</span>
-                      </div>
-                      <div className="h-2 bg-coreon-navy-dark rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-coreon-blue to-coreon-blue-light w-[30%] rounded-full"></div>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <div className="flex justify-between text-sm mb-1">
-                        <span className="text-coreon-gray-light">Network</span>
-                        <span>4.2 MB/s</span>
-                      </div>
-                      <div className="h-2 bg-coreon-navy-dark rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-coreon-blue to-coreon-blue-light w-[15%] rounded-full"></div>
-                      </div>
-                    </div>
-                  </div>
+                <div className="p-4 max-h-[500px] overflow-y-auto">
+                  <AgentControls agents={agents} />
                 </div>
               </div>
             </div>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <div className="bg-coreon-navy/50 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg">
+          <div className="grid grid-cols-12 gap-6 mb-8">
+            {/* Task Monitor */}
+            <div className="col-span-12 lg:col-span-8">
+              <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg overflow-hidden">
                 <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
                   <h2 className="font-bold text-lg">Task Monitor</h2>
-                  <div className="flex items-center text-xs text-coreon-gray-light">
-                    <span className="mr-2">Filter:</span>
-                    <select className="bg-coreon-navy/70 border border-coreon-blue/20 rounded px-2 py-1 text-white text-xs">
-                      <option>All Tasks</option>
-                      <option>In Progress</option>
-                      <option>Pending Review</option>
-                      <option>Completed</option>
-                    </select>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center text-xs text-coreon-gray-light">
+                      <span className="mr-2">Filter:</span>
+                      <select className="bg-coreon-navy/70 border border-coreon-blue/20 rounded px-2 py-1 text-white text-xs">
+                        <option>All Tasks</option>
+                        <option>In Progress</option>
+                        <option>Pending Review</option>
+                        <option>Completed</option>
+                      </select>
+                    </div>
+                    <button className="text-xs text-coreon-blue hover:text-coreon-blue-light">
+                      View All
+                    </button>
                   </div>
                 </div>
-                <div className="p-4">
+                <div className="overflow-hidden">
                   <TaskMonitor tasks={tasks} />
                 </div>
               </div>
             </div>
             
-            <div>
-              <div className="bg-coreon-navy/50 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg">
+            {/* Human Review Queue */}
+            <div className="col-span-12 lg:col-span-4">
+              <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg">
                 <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
                   <div className="flex items-center">
                     <h2 className="font-bold text-lg">Human Review</h2>
@@ -407,7 +435,7 @@ export default function Demo() {
                     View All
                   </button>
                 </div>
-                <div className="p-4">
+                <div className="p-4 max-h-[600px] overflow-y-auto">
                   <HumanReviewQueue 
                     items={reviewItems} 
                     onApprove={handleApprove}
@@ -418,9 +446,18 @@ export default function Demo() {
             </div>
           </div>
           
-          <div className="mt-8 bg-coreon-navy/50 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg">
-            <div className="p-4 border-b border-coreon-blue/20">
+          {/* Metrics Display - Added before the Compliance Panel */}
+          <div className="mb-8">
+            <MetricsDisplay demoRunning={demoRunning} />
+          </div>
+          
+          {/* Compliance Panel */}
+          <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg">
+            <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
               <h2 className="font-bold text-lg">Compliance & Audit</h2>
+              <button className="text-xs text-coreon-blue hover:text-coreon-blue-light">
+                Export Report
+              </button>
             </div>
             <div className="p-4">
               <CompliancePanel />

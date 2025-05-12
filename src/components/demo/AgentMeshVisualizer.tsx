@@ -146,7 +146,6 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
       
       for (let i = 0; i < positions.length; i++) {
         const [id1, pos1] = positions[i];
-        const agent1 = agents.find(a => a.id === id1);
         
         // Update pulse phase
         pos1.pulsePhase = (pos1.pulsePhase + pulseSpeed) % (Math.PI * 2);
@@ -259,7 +258,7 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
             
             // Subtle line style
             ctx.strokeStyle = gradient;
-            ctx.lineWidth = 1;
+            ctx.lineWidth = conn.strength * 2;
             ctx.globalAlpha = 0.6;
             ctx.stroke();
             ctx.globalAlpha = 1;
@@ -283,6 +282,15 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
                 ctx.fill();
               }
             }
+            
+            // Show connection type
+            const midX = (startX + endX) / 2;
+            const midY = (startY + endY) / 2;
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+            ctx.font = '8px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(conn.type, midX, midY - 5);
           }
         }
       });
@@ -359,7 +367,7 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
         // Draw agent name with clean label
         const nameY = pos.y + pulseRadius + 15;
         const name = agent.name;
-        ctx.font = '10px Inter, Arial, sans-serif';
+        ctx.font = '10px Arial, sans-serif';
         const textWidth = ctx.measureText(name).width;
         
         // Name background - subtle
