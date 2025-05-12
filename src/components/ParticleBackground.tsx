@@ -18,22 +18,46 @@ interface FloatingElement {
   opacity: number;
   speed: number;
   angle: number;
-  shape: 'circle' | 'square' | 'triangle' | 'hexagon';
+  shape: 'circle' | 'square' | 'triangle' | 'hexagon' | 'diamond' | 'dot';
   rotationSpeed: number;
   currentRotation: number;
+  color: string;
+}
+
+interface ConnectionLine {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  opacity: number;
+  width: number;
+  progress: number;
+  speed: number;
+  maxLength: number;
 }
 
 export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wavePointsRef = useRef<WavePoint[][]>([]);
   const floatingElementsRef = useRef<FloatingElement[]>([]);
+  const connectionLinesRef = useRef<ConnectionLine[]>([]);
   const mousePosition = useRef({ x: 0, y: 0, active: false });
   const animationFrameId = useRef<number>(0);
+  
+  // Professional color palette
   const gradientColorsRef = useRef<string[]>([
-    'rgba(16, 24, 52, 0.8)',
-    'rgba(23, 42, 69, 0.7)',
-    'rgba(32, 64, 96, 0.6)',
+    'rgba(12, 20, 45, 0.9)',
+    'rgba(15, 25, 50, 0.8)',
+    'rgba(18, 30, 60, 0.7)',
   ]);
+  
+  const elementColors = [
+    'rgba(64, 145, 220, 0.7)',   // Blue
+    'rgba(74, 160, 200, 0.7)',   // Light blue
+    'rgba(100, 120, 190, 0.7)',  // Indigo
+    'rgba(120, 100, 180, 0.7)',  // Purple
+    'rgba(80, 170, 180, 0.7)',   // Teal
+  ];
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -65,21 +89,21 @@ export default function ParticleBackground() {
 
     // Initialize wave points and floating elements
     const initElements = () => {
-      // Create multiple wave layers
+      // Create subtle wave layers
       wavePointsRef.current = [];
-      const waveCount = 3;
+      const waveCount = 2;
       
       for (let w = 0; w < waveCount; w++) {
         const wavePoints: WavePoint[] = [];
-        const pointCount = Math.floor(canvas.width / 30); // Point every 30px
+        const pointCount = Math.floor(canvas.width / 40); // Point every 40px
         
         for (let i = 0; i <= pointCount; i++) {
           wavePoints.push({
             x: (canvas.width * i) / pointCount,
-            y: canvas.height * (0.5 + (w * 0.1)),
-            originalY: canvas.height * (0.5 + (w * 0.1)),
-            speed: 0.02 + (w * 0.005),
-            amplitude: 15 + (w * 10),
+            y: canvas.height * (0.6 + (w * 0.1)),
+            originalY: canvas.height * (0.6 + (w * 0.1)),
+            speed: 0.01 + (w * 0.003),
+            amplitude: 8 + (w * 5),
             phase: Math.random() * Math.PI * 2
           });
         }
@@ -87,22 +111,46 @@ export default function ParticleBackground() {
         wavePointsRef.current.push(wavePoints);
       }
       
-      // Create floating elements
+      // Create floating elements - fewer and more subtle
       floatingElementsRef.current = [];
-      const elementCount = Math.floor((canvas.width * canvas.height) / 40000);
-      const shapes: ('circle' | 'square' | 'triangle' | 'hexagon')[] = ['circle', 'square', 'triangle', 'hexagon'];
+      const elementCount = Math.floor((canvas.width * canvas.height) / 50000);
+      const shapes: ('circle' | 'square' | 'triangle' | 'hexagon' | 'diamond' | 'dot')[] = 
+        ['circle', 'square', 'diamond', 'dot', 'dot', 'dot']; // More dots for subtlety
       
       for (let i = 0; i < elementCount; i++) {
         floatingElementsRef.current.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          size: Math.random() * 6 + 2,
-          opacity: Math.random() * 0.3 + 0.1,
-          speed: (Math.random() - 0.5) * 0.3,
+          size: Math.random() * 4 + 1, // Smaller elements
+          opacity: Math.random() * 0.2 + 0.1, // More transparent
+          speed: (Math.random() - 0.5) * 0.2,
           angle: Math.random() * Math.PI * 2,
           shape: shapes[Math.floor(Math.random() * shapes.length)],
-          rotationSpeed: (Math.random() - 0.5) * 0.01,
-          currentRotation: Math.random() * Math.PI * 2
+          rotationSpeed: (Math.random() - 0.5) * 0.005,
+          currentRotation: Math.random() * Math.PI * 2,
+          color: elementColors[Math.floor(Math.random() * elementColors.length)]
+        });
+      }
+      
+      // Create connection lines - enterprise data flow visualization
+      connectionLinesRef.current = [];
+      const lineCount = Math.floor(elementCount * 0.4);
+      
+      for (let i = 0; i < lineCount; i++) {
+        const x1 = Math.random() * canvas.width;
+        const y1 = Math.random() * canvas.height;
+        const angle = Math.random() * Math.PI * 2;
+        const maxLength = 100 + Math.random() * 200;
+        const x2 = x1 + Math.cos(angle) * maxLength;
+        const y2 = y1 + Math.sin(angle) * maxLength;
+        
+        connectionLinesRef.current.push({
+          x1, y1, x2, y2,
+          opacity: Math.random() * 0.15 + 0.05,
+          width: Math.random() * 1 + 0.5,
+          progress: 0,
+          speed: Math.random() * 0.01 + 0.005,
+          maxLength
         });
       }
     };
@@ -112,7 +160,7 @@ export default function ParticleBackground() {
       ctx.save();
       ctx.translate(element.x, element.y);
       ctx.rotate(element.currentRotation);
-      ctx.fillStyle = `rgba(48, 198, 255, ${element.opacity})`;
+      ctx.fillStyle = element.color;
       
       switch (element.shape) {
         case 'circle':
@@ -128,7 +176,7 @@ export default function ParticleBackground() {
         case 'triangle':
           ctx.beginPath();
           ctx.moveTo(0, -element.size);
-          ctx.lineTo(element.size * 0.866, element.size * 0.5); // cos(60°), sin(60°)
+          ctx.lineTo(element.size * 0.866, element.size * 0.5);
           ctx.lineTo(-element.size * 0.866, element.size * 0.5);
           ctx.closePath();
           ctx.fill();
@@ -146,9 +194,67 @@ export default function ParticleBackground() {
           ctx.closePath();
           ctx.fill();
           break;
+          
+        case 'diamond':
+          ctx.beginPath();
+          ctx.moveTo(0, -element.size);
+          ctx.lineTo(element.size, 0);
+          ctx.lineTo(0, element.size);
+          ctx.lineTo(-element.size, 0);
+          ctx.closePath();
+          ctx.fill();
+          break;
+          
+        case 'dot':
+          ctx.beginPath();
+          ctx.arc(0, 0, element.size / 2, 0, Math.PI * 2);
+          ctx.fill();
+          break;
       }
       
       ctx.restore();
+    };
+
+    // Draw connection line with animated flow
+    const drawConnectionLine = (ctx: CanvasRenderingContext2D, line: ConnectionLine) => {
+      const dx = line.x2 - line.x1;
+      const dy = line.y2 - line.y1;
+      const length = Math.sqrt(dx * dx + dy * dy);
+      
+      // Calculate current progress
+      const currentLength = length * line.progress;
+      const angle = Math.atan2(dy, dx);
+      
+      // Calculate current end point
+      const currentX = line.x1 + Math.cos(angle) * currentLength;
+      const currentY = line.y1 + Math.sin(angle) * currentLength;
+      
+      // Draw line
+      ctx.beginPath();
+      ctx.moveTo(line.x1, line.y1);
+      ctx.lineTo(currentX, currentY);
+      
+      // Create gradient for data flow effect
+      const gradient = ctx.createLinearGradient(line.x1, line.y1, currentX, currentY);
+      gradient.addColorStop(0, `rgba(64, 145, 220, ${line.opacity * 0.5})`);
+      gradient.addColorStop(0.5, `rgba(100, 180, 220, ${line.opacity})`);
+      gradient.addColorStop(1, `rgba(64, 145, 220, ${line.opacity * 0.5})`);
+      
+      ctx.strokeStyle = gradient;
+      ctx.lineWidth = line.width;
+      ctx.stroke();
+      
+      // Draw data pulse effect
+      if (line.progress > 0.1 && line.progress < 0.9) {
+        const pulsePosition = line.progress - 0.05;
+        const pulseX = line.x1 + Math.cos(angle) * (length * pulsePosition);
+        const pulseY = line.y1 + Math.sin(angle) * (length * pulsePosition);
+        
+        ctx.beginPath();
+        ctx.arc(pulseX, pulseY, line.width * 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(120, 200, 255, ${line.opacity * 1.5})`;
+        ctx.fill();
+      }
     };
 
     // Animation function
@@ -164,14 +270,35 @@ export default function ParticleBackground() {
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // Update and draw wave points
+      // Optional: Add subtle grid pattern for enterprise look
+      const gridSize = 40;
+      const gridOpacity = 0.05;
+      
+      ctx.strokeStyle = `rgba(100, 150, 200, ${gridOpacity})`;
+      ctx.lineWidth = 0.5;
+      
+      // Draw vertical grid lines
+      for (let x = 0; x <= canvas.width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, canvas.height);
+        ctx.stroke();
+      }
+      
+      // Draw horizontal grid lines
+      for (let y = 0; y <= canvas.height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.stroke();
+      }
+      
+      // Update and draw wave points - very subtle waves
       wavePointsRef.current.forEach((wavePoints, waveIndex) => {
-        const now = Date.now() / 1000;
-        
         // Update wave points
         wavePoints.forEach((point) => {
           point.phase += point.speed;
-          point.y = point.originalY + Math.sin(point.phase + (point.x / 200)) * point.amplitude;
+          point.y = point.originalY + Math.sin(point.phase + (point.x / 300)) * point.amplitude;
         });
         
         // Draw wave
@@ -189,22 +316,41 @@ export default function ParticleBackground() {
         ctx.lineTo(canvas.width, canvas.height);
         ctx.lineTo(0, canvas.height);
         
-        // Fill with gradient
+        // Fill with gradient - very subtle
         const waveGradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-        const alpha = 0.15 - (waveIndex * 0.03);
-        waveGradient.addColorStop(0, `rgba(48, 198, 255, 0)`);
-        waveGradient.addColorStop(0.7, `rgba(48, 198, 255, ${alpha})`);
-        waveGradient.addColorStop(1, `rgba(48, 198, 255, ${alpha * 1.5})`);
+        const alpha = 0.08 - (waveIndex * 0.02);
+        waveGradient.addColorStop(0, `rgba(64, 145, 220, 0)`);
+        waveGradient.addColorStop(0.8, `rgba(64, 145, 220, ${alpha})`);
+        waveGradient.addColorStop(1, `rgba(64, 145, 220, ${alpha * 1.5})`);
         
         ctx.fillStyle = waveGradient;
         ctx.fill();
       });
       
+      // Update and draw connection lines
+      connectionLinesRef.current.forEach((line) => {
+        // Update progress
+        line.progress += line.speed;
+        if (line.progress >= 1) {
+          // Reset line with new position when complete
+          line.x1 = Math.random() * canvas.width;
+          line.y1 = Math.random() * canvas.height;
+          const angle = Math.random() * Math.PI * 2;
+          line.x2 = line.x1 + Math.cos(angle) * line.maxLength;
+          line.y2 = line.y1 + Math.sin(angle) * line.maxLength;
+          line.progress = 0;
+          line.opacity = Math.random() * 0.15 + 0.05;
+        }
+        
+        // Draw line
+        drawConnectionLine(ctx, line);
+      });
+      
       // Update and draw floating elements
       floatingElementsRef.current.forEach((element) => {
-        // Update position
-        element.x += Math.cos(element.angle) * element.speed;
-        element.y += Math.sin(element.angle) * element.speed;
+        // Update position - slower movement
+        element.x += Math.cos(element.angle) * element.speed * 0.5;
+        element.y += Math.sin(element.angle) * element.speed * 0.5;
         element.currentRotation += element.rotationSpeed;
         
         // Wrap around edges
@@ -213,25 +359,25 @@ export default function ParticleBackground() {
         if (element.y > canvas.height + element.size) element.y = -element.size;
         if (element.y < -element.size) element.y = canvas.height + element.size;
         
-        // Mouse interaction
+        // Mouse interaction - more subtle
         if (mousePosition.current.active) {
           const dx = mousePosition.current.x - element.x;
           const dy = mousePosition.current.y - element.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          const maxDistance = 150;
+          const maxDistance = 120;
           
           if (distance < maxDistance) {
             // Gently push elements away from mouse
-            const force = (1 - distance / maxDistance) * 0.05;
+            const force = (1 - distance / maxDistance) * 0.03;
             const angle = Math.atan2(dy, dx);
             element.x -= Math.cos(angle) * force * element.size;
             element.y -= Math.sin(angle) * force * element.size;
             
-            // Increase opacity when near mouse
-            element.opacity = Math.min(0.8, element.opacity + 0.01);
+            // Slightly increase opacity when near mouse
+            element.opacity = Math.min(0.5, element.opacity + 0.005);
           } else {
             // Gradually return to original opacity
-            element.opacity = Math.max(0.1, element.opacity - 0.005);
+            element.opacity = Math.max(0.1, element.opacity - 0.002);
           }
         }
         

@@ -94,12 +94,38 @@
   animation: orbit 20s linear infinite;
 }
 
+.animated-orbit-clockwise {
+  animation: orbit-clockwise 20s linear infinite;
+}
+
+.animated-orbit-counter {
+  animation: orbit-counter 20s linear infinite;
+}
+
 @keyframes orbit {
   0% {
     transform: rotate(0deg) translateX(50px) rotate(0deg);
   }
   100% {
     transform: rotate(360deg) translateX(50px) rotate(-360deg);
+  }
+}
+
+@keyframes orbit-clockwise {
+  0% {
+    transform: rotate(0deg) translateX(100px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(100px) rotate(-360deg);
+  }
+}
+
+@keyframes orbit-counter {
+  0% {
+    transform: rotate(360deg) translateX(80px) rotate(-360deg);
+  }
+  100% {
+    transform: rotate(0deg) translateX(80px) rotate(0deg);
   }
 }
 
@@ -111,6 +137,14 @@
   animation: float 6s ease-in-out infinite;
 }
 
+.animate-float-slow {
+  animation: float 12s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
 @keyframes float {
   0%, 100% {
     transform: translateY(0);
@@ -118,4 +152,41 @@
   50% {
     transform: translateY(-10px);
   }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 0.6;
+    box-shadow: 0 0 5px 2px rgba(48, 198, 255, 0.3);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 10px 4px rgba(48, 198, 255, 0.6);
+  }
+}
+
+/* 3D Transform Utilities */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.rotate-x-60 {
+  transform: rotateX(60deg);
+}
+
+.rotate-z-45 {
+  transform: rotateZ(45deg);
+}
+
+.-rotate-x-30 {
+  transform: rotateX(-30deg);
+}
+
+.rotate-z-30 {
+  transform: rotateZ(30deg);
+}
+
+/* Gradient Utilities */
+.bg-gradient-radial {
+  background-image: radial-gradient(var(--tw-gradient-stops));
 } 

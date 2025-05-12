@@ -14,6 +14,8 @@ interface Agent {
 interface Connection {
   from: string;
   to: string;
+  type: string;
+  strength: number;
 }
 
 interface AgentMeshVisualizerProps {
