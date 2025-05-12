@@ -491,7 +491,7 @@ export default function Demo() {
                     </button>
                   </div>
                 </div>
-                <div className="h-[250px] overflow-hidden">
+                <div className="h-[280px]">
                   <TaskMonitor tasks={filteredTasks.slice(0, 4)} />
                 </div>
               </div>
@@ -512,8 +512,8 @@ export default function Demo() {
                     Configure All
                   </button>
                 </div>
-                <div className="p-4 h-[200px]">
-                  <AgentControls agents={agents.slice(0, 3)} />
+                <div className="p-4 h-[240px]">
+                  <AgentControls agents={agents.slice(0, 2)} />
                 </div>
               </div>
               
@@ -530,7 +530,7 @@ export default function Demo() {
                     View All
                   </button>
                 </div>
-                <div className="p-4 h-[220px] overflow-hidden">
+                <div className="p-4 h-[260px]">
                   <HumanReviewQueue 
                     items={reviewItems.slice(0, 1)} 
                     onApprove={handleApprove}
@@ -547,7 +547,7 @@ export default function Demo() {
                     Export Report
                   </button>
                 </div>
-                <div className="p-4 h-[168px] overflow-hidden">
+                <div className="p-4 h-[180px]">
                   <CompliancePanel />
                 </div>
               </div>
