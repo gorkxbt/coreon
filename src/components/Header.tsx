@@ -10,10 +10,14 @@ const navItems = [
   { name: 'Use Cases', href: '#use-cases' },
   { name: 'Architecture', href: '#architecture' },
   { name: 'Security', href: '#security' },
-  { name: 'Documentation', href: '#docs' },
+  { name: 'Documentation', href: '/docs' },
 ];
 
-export default function Header() {
+interface HeaderProps {
+  showDemoButton?: boolean;
+}
+
+export default function Header({ showDemoButton = false }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -44,7 +48,7 @@ export default function Header() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden md:flex items-center space-x-6">
           {navItems.map((item) => (
             <Link
               key={item.name}
@@ -54,6 +58,17 @@ export default function Header() {
               {item.name}
             </Link>
           ))}
+          {showDemoButton && (
+            <Link
+              href="/demo"
+              className="btn-secondary border border-coreon-blue/50 hover:border-coreon-blue"
+            >
+              <span className="flex items-center">
+                <span className="mr-2 h-2 w-2 rounded-full bg-coreon-blue animate-pulse"></span>
+                Live Demo
+              </span>
+            </Link>
+          )}
           <Link
             href="#contact"
             className="btn-primary"
@@ -101,6 +116,18 @@ export default function Header() {
                 {item.name}
               </Link>
             ))}
+            {showDemoButton && (
+              <Link
+                href="/demo"
+                className="block py-2 text-coreon-blue font-medium"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <span className="flex items-center">
+                  <span className="mr-2 h-2 w-2 rounded-full bg-coreon-blue animate-pulse"></span>
+                  Live Demo
+                </span>
+              </Link>
+            )}
             <Link
               href="#contact"
               className="block mt-4 btn-primary w-full text-center"

@@ -11,6 +11,7 @@ import Agents from '../components/Agents';
 import Security from '../components/Security';
 import CTA from '../components/CTA';
 import Footer from '../components/Footer';
+import ParticleBackground from '../components/ParticleBackground';
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -29,7 +30,9 @@ export default function Home() {
         }}
       />
       
-      <Header />
+      <ParticleBackground />
+      
+      <Header showDemoButton={true} />
       
       <motion.div
         initial={{ opacity: 0 }}
