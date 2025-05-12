@@ -8,7 +8,7 @@ interface Agent {
   type: string;
   status: string;
   confidence: number;
-  model?: string;
+  model: string;
 }
 
 interface AgentControlsProps {
