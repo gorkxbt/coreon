@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    @apply bg-coreon-navy-dark text-white antialiased scroll-smooth;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold tracking-tight;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  p {
+    @apply text-coreon-gray-light/90 leading-relaxed;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md px-6 py-3 text-base font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn bg-coreon-blue text-coreon-navy-dark hover:bg-coreon-blue-light focus:ring-coreon-blue;
+  }
+
+  .btn-secondary {
+    @apply btn border-2 border-coreon-blue text-coreon-blue hover:bg-coreon-blue/10 focus:ring-coreon-blue;
+  }
+
+  .container-custom {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .card {
+    @apply rounded-xl bg-gradient-to-b from-coreon-navy to-coreon-navy-dark p-6 shadow-lg transition-all duration-300 hover:shadow-coreon-blue/20;
+  }
+
+  .section {
+    @apply py-16 md:py-24;
+  }
+
+  .glow-effect {
+    @apply relative;
+  }
+  
+  .glow-effect::before {
+    @apply absolute -inset-1 rounded-full bg-coreon-blue/30 blur-lg opacity-75 transition-all duration-1000;
+    content: "";
+    z-index: -1;
+  }
+
+  .glow-effect:hover::before {
+    @apply bg-coreon-blue/50;
+  }
+
+  .gradient-text {
+    @apply bg-gradient-to-r from-coreon-blue to-coreon-blue-light bg-clip-text text-transparent;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-coreon-navy;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-coreon-blue/50 rounded-full transition-colors duration-300;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-coreon-blue;
+}
+
+/* Custom Animation Classes */
+.animated-orbit {
+  animation: orbit 20s linear infinite;
+}
+
+@keyframes orbit {
+  0% {
+    transform: rotate(0deg) translateX(50px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(50px) rotate(-360deg);
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+} 
