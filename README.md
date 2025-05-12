@@ -1,8 +1,11 @@
 # Coreon
 
-Enterprise AI orchestration platform designed for regulated environments. Configure task-specific agents that collaborate within flexible, governed workflows.
+<div align="center">
+  <p style="font-size: 100px; color: #30C6FF; line-height: 1;">C</p>
+  <p><em>Enterprise AI Orchestration Platform</em></p>
+</div>
 
-![Coreon Logo](public/images/logo.png)
+Enterprise AI orchestration platform designed for regulated environments. Configure task-specific agents that collaborate within flexible, governed workflows.
 
 ## About
 

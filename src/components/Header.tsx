@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Logo from './Logo';
 
 const navItems = [
   { name: 'Platform', href: '#platform' },
@@ -37,10 +38,7 @@ export default function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center">
           <div className="relative h-10 w-10 mr-2">
-            <div className="absolute inset-0 rounded-full bg-coreon-blue animate-pulse-glow"></div>
-            <div className="absolute inset-0 flex items-center justify-center text-2xl font-bold text-coreon-navy-dark">
-              C
-            </div>
+            <Logo size={40} className="animate-pulse-glow" />
           </div>
           <span className="text-xl font-bold gradient-text">Coreon</span>
         </Link>

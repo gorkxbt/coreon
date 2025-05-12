@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Logo from './Logo';
 
 const productLinks = [
   { name: 'Platform', href: '#platform' },
@@ -67,10 +68,7 @@ export default function Footer() {
           <div className="space-y-8 xl:col-span-1">
             <div className="flex items-center">
               <div className="relative h-10 w-10 mr-2">
-                <div className="absolute inset-0 rounded-full bg-coreon-blue/50 opacity-50"></div>
-                <div className="absolute inset-0 flex items-center justify-center text-2xl font-bold text-white">
-                  C
-                </div>
+                <Logo size={40} />
               </div>
               <span className="text-xl font-bold text-coreon-gray-light">Coreon</span>
             </div>

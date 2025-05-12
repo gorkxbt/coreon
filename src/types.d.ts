@@ -29,6 +29,31 @@ declare module 'next/link' {
   export default Link;
 }
 
+declare module 'next/image' {
+  import { ComponentType } from 'react';
+
+  export interface ImageProps {
+    src: string;
+    alt: string;
+    width?: number;
+    height?: number;
+    layout?: 'fixed' | 'fill' | 'intrinsic' | 'responsive';
+    priority?: boolean;
+    loading?: 'eager' | 'lazy';
+    objectFit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
+    objectPosition?: string;
+    quality?: number;
+    placeholder?: 'blur' | 'empty';
+    blurDataURL?: string;
+    className?: string;
+    style?: any;
+    [key: string]: any;
+  }
+
+  const Image: ComponentType<ImageProps>;
+  export default Image;
+}
+
 declare module 'next/font/google' {
   export function Inter(options: any): {
     className: string;
