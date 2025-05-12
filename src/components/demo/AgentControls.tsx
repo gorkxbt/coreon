@@ -8,6 +8,7 @@ interface Agent {
   type: string;
   status: string;
   confidence: number;
+  model?: string;
 }
 
 interface AgentControlsProps {
@@ -177,7 +178,7 @@ export default function AgentControls({ agents, setAgents }: AgentControlsProps)
                     </div>
                     <div className="flex justify-between">
                       <span className="text-coreon-gray-light">Model:</span>
-                      <span>coreon-{agent.type}</span>
+                      <span>{agent.model || `coreon-${agent.type}`}</span>
                     </div>
                   </div>
                 </div>
