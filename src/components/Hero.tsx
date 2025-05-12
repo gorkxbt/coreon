@@ -17,8 +17,8 @@ export default function Hero() {
       const { innerWidth, innerHeight } = window;
       
       // Calculate the movement based on mouse position - more subtle
-      const moveX = (clientX - innerWidth / 2) / 80;
-      const moveY = (clientY - innerHeight / 2) / 80;
+      const moveX = (clientX - innerWidth / 2) / 60;
+      const moveY = (clientY - innerHeight / 2) / 60;
       
       // Apply the transform
       animationRef.current.style.transform = `translate(${moveX}px, ${moveY}px)`;
@@ -26,7 +26,7 @@ export default function Hero() {
     
     window.addEventListener('mousemove', handleMouseMove);
     
-    // Canvas animation for data visualization
+    // Canvas animation for fluid, modern background
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext('2d');
@@ -40,154 +40,210 @@ export default function Hero() {
         window.addEventListener('resize', updateCanvasSize);
         updateCanvasSize();
         
-        // Data visualization nodes
-        const nodes: {
+        // Create fluid, organic particles
+        const particles: {
+          x: number;
+          y: number;
+          size: number;
+          color: string;
+          vx: number;
+          vy: number;
+          opacity: number;
+          opacityDelta: number;
+          life: number;
+          maxLife: number;
+        }[] = [];
+        
+        // Blobs that move around the canvas
+        const blobs: {
           x: number;
           y: number;
           radius: number;
+          vx: number;
+          vy: number;
           color: string;
-          connections: number[];
-          speed: number;
-          angle: number;
         }[] = [];
         
-        // Create nodes
-        const nodeCount = Math.min(12, Math.max(8, Math.floor(window.innerWidth / 150)));
+        // Color palette - professional blues with brand colors
         const colors = [
-          'rgba(64, 145, 220, 0.7)',   // Blue
-          'rgba(100, 180, 220, 0.6)',   // Light blue
-          'rgba(100, 120, 190, 0.7)',   // Indigo
-          'rgba(80, 170, 180, 0.7)',    // Teal
+          'rgba(48, 198, 255, 0.06)',  // Coreon blue
+          'rgba(30, 144, 255, 0.05)',  // Dodger blue
+          'rgba(65, 105, 225, 0.04)',  // Royal blue
+          'rgba(0, 87, 164, 0.05)',    // Navy blue
+          'rgba(25, 25, 112, 0.04)',   // Midnight blue
         ];
         
-        for (let i = 0; i < nodeCount; i++) {
-          const centerX = canvas.width * 0.5;
-          const centerY = canvas.height * 0.5;
-          const angle = (i / nodeCount) * Math.PI * 2;
-          const radius = Math.random() * 150 + 100;
-          
-          nodes.push({
-            x: centerX + Math.cos(angle) * radius,
-            y: centerY + Math.sin(angle) * radius,
-            radius: Math.random() * 3 + 2,
-            color: colors[Math.floor(Math.random() * colors.length)],
-            connections: [],
-            speed: (Math.random() - 0.5) * 0.2,
-            angle: Math.random() * Math.PI * 2
+        // Create initial blobs
+        const blobCount = Math.min(7, Math.max(4, Math.floor(window.innerWidth / 300)));
+        for (let i = 0; i < blobCount; i++) {
+          blobs.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 300 + 150,
+            vx: (Math.random() - 0.5) * 0.5,
+            vy: (Math.random() - 0.5) * 0.5,
+            color: colors[Math.floor(Math.random() * colors.length)]
           });
         }
         
-        // Establish connections between nodes
-        for (let i = 0; i < nodes.length; i++) {
-          const connectionsCount = Math.floor(Math.random() * 3) + 1;
-          for (let j = 0; j < connectionsCount; j++) {
-            const target = (i + j + 1) % nodes.length;
-            if (!nodes[i].connections.includes(target)) {
-              nodes[i].connections.push(target);
+        // Function to add new particles
+        const addParticles = () => {
+          const count = Math.random() * 2 + 1;
+          for (let i = 0; i < count; i++) {
+            particles.push({
+              x: Math.random() * canvas.width,
+              y: Math.random() * canvas.height,
+              size: Math.random() * 3 + 1,
+              color: colors[Math.floor(Math.random() * colors.length)],
+              vx: (Math.random() - 0.5) * 0.3,
+              vy: (Math.random() - 0.5) * 0.3,
+              opacity: 0,
+              opacityDelta: 0.01,
+              life: 0,
+              maxLife: Math.random() * 300 + 200
+            });
+          }
+        };
+        
+        // Create connection lines between nearby particles
+        const drawConnections = () => {
+          for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+              const dx = particles[i].x - particles[j].x;
+              const dy = particles[i].y - particles[j].y;
+              const distance = Math.sqrt(dx * dx + dy * dy);
+              
+              if (distance < 150) {
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x, particles[i].y);
+                ctx.lineTo(particles[j].x, particles[j].y);
+                const opacity = 0.05 * (1 - distance / 150);
+                ctx.strokeStyle = `rgba(48, 198, 255, ${opacity})`;
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+              }
             }
           }
-        }
+        };
+        
+        // Create flowing curve effects
+        const drawFlowingCurves = (time: number) => {
+          const curves = 3;
+          for (let c = 0; c < curves; c++) {
+            ctx.beginPath();
+            
+            // Create flowing wave paths that cross the entire screen
+            const yOffset = canvas.height * (c / curves);
+            const amplitude = canvas.height * 0.05;
+            const frequency = 0.002;
+            const speed = 0.0002;
+            
+            ctx.moveTo(0, yOffset);
+            
+            for (let x = 0; x < canvas.width; x += 5) {
+              const y = yOffset + 
+                Math.sin((x * frequency) + (time * speed) + c) * amplitude +
+                Math.sin((x * frequency * 0.5) + (time * speed * 0.7) + c) * amplitude;
+              
+              ctx.lineTo(x, y);
+            }
+            
+            ctx.strokeStyle = `rgba(48, 198, 255, 0.04)`;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+          }
+        };
         
         // Animation function
         const animate = () => {
+          // Request the next frame first to ensure smooth animation
+          animationFrameId.current = requestAnimationFrame(animate);
+          
+          const time = Date.now();
+          
+          // Clear canvas
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           
-          // Update node positions - subtle movement
-          nodes.forEach(node => {
-            node.x += Math.cos(node.angle) * node.speed;
-            node.y += Math.sin(node.angle) * node.speed;
+          // Draw big, semi-transparent blobs
+          blobs.forEach(blob => {
+            // Update blob position
+            blob.x += blob.vx;
+            blob.y += blob.vy;
             
-            // Boundary check with gentle bounce
-            const margin = 50;
-            if (node.x < margin) {
-              node.x = margin;
-              node.angle = Math.PI - node.angle;
-            } else if (node.x > canvas.width - margin) {
-              node.x = canvas.width - margin;
-              node.angle = Math.PI - node.angle;
-            }
+            // Bounce off edges
+            if (blob.x < -blob.radius) blob.x = canvas.width + blob.radius;
+            if (blob.x > canvas.width + blob.radius) blob.x = -blob.radius;
+            if (blob.y < -blob.radius) blob.y = canvas.height + blob.radius;
+            if (blob.y > canvas.height + blob.radius) blob.y = -blob.radius;
             
-            if (node.y < margin) {
-              node.y = margin;
-              node.angle = -node.angle;
-            } else if (node.y > canvas.height - margin) {
-              node.y = canvas.height - margin;
-              node.angle = -node.angle;
-            }
-          });
-          
-          // Draw connections first (so they appear behind nodes)
-          nodes.forEach((node, i) => {
-            node.connections.forEach(targetIndex => {
-              const target = nodes[targetIndex];
-              
-              // Calculate distance for opacity
-              const dx = target.x - node.x;
-              const dy = target.y - node.y;
-              const distance = Math.sqrt(dx * dx + dy * dy);
-              const maxDistance = 300;
-              
-              if (distance < maxDistance) {
-                // Create gradient for connection
-                const gradient = ctx.createLinearGradient(node.x, node.y, target.x, target.y);
-                const baseColor = node.color.replace(/[\d.]+\)$/, '');
-                
-                gradient.addColorStop(0, `${baseColor}0.7)`);
-                gradient.addColorStop(0.5, `${baseColor}0.3)`);
-                gradient.addColorStop(1, `${baseColor}0.7)`);
-                
-                // Draw connection line
-                ctx.beginPath();
-                ctx.moveTo(node.x, node.y);
-                ctx.lineTo(target.x, target.y);
-                ctx.strokeStyle = gradient;
-                ctx.lineWidth = 0.5;
-                ctx.stroke();
-                
-                // Draw data packets moving along the connection
-                const now = Date.now() / 1000;
-                const speed = 2; // seconds to travel the line
-                const t = (now % speed) / speed;
-                
-                const packetX = node.x + dx * t;
-                const packetY = node.y + dy * t;
-                
-                ctx.beginPath();
-                ctx.arc(packetX, packetY, 1.5, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                ctx.fill();
-              }
-            });
-          });
-          
-          // Draw nodes
-          nodes.forEach(node => {
-            // Glow effect
+            // Draw blob
             const gradient = ctx.createRadialGradient(
-              node.x, node.y, 0,
-              node.x, node.y, node.radius * 3
+              blob.x, blob.y, 0,
+              blob.x, blob.y, blob.radius
             );
-            gradient.addColorStop(0, node.color);
+            gradient.addColorStop(0, blob.color);
             gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
             
             ctx.beginPath();
-            ctx.arc(node.x, node.y, node.radius * 3, 0, Math.PI * 2);
+            ctx.arc(blob.x, blob.y, blob.radius, 0, Math.PI * 2);
             ctx.fillStyle = gradient;
-            ctx.fill();
-            
-            // Node core
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
             ctx.fill();
           });
           
-          animationFrameId.current = requestAnimationFrame(animate);
+          // Draw flowing curves
+          drawFlowingCurves(time);
+          
+          // Occasionally add new particles
+          if (Math.random() < 0.1) {
+            addParticles();
+          }
+          
+          // Update and draw particles
+          for (let i = particles.length - 1; i >= 0; i--) {
+            const p = particles[i];
+            
+            // Update position
+            p.x += p.vx;
+            p.y += p.vy;
+            
+            // Update opacity
+            if (p.life < 30) {
+              p.opacity += p.opacityDelta;
+              if (p.opacity > 0.5) p.opacity = 0.5;
+            } else if (p.life > p.maxLife - 30) {
+              p.opacity -= p.opacityDelta;
+              if (p.opacity < 0) p.opacity = 0;
+            }
+            
+            // Increment life
+            p.life++;
+            
+            // Remove dead particles
+            if (p.life >= p.maxLife) {
+              particles.splice(i, 1);
+              continue;
+            }
+            
+            // Draw particle
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = p.color.replace(')', `, ${p.opacity})`);
+            ctx.fill();
+          }
+          
+          // Draw connections between particles
+          drawConnections();
         };
         
+        // Initialize with some particles
+        for (let i = 0; i < 30; i++) {
+          addParticles();
+        }
+        
+        // Start animation
         animate();
         
-        // Cleanup function for this specific context
+        // Cleanup function
         return () => {
           window.removeEventListener('resize', updateCanvasSize);
           cancelAnimationFrame(animationFrameId.current);
@@ -225,79 +281,115 @@ export default function Hero() {
 
   return (
     <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
-      {/* Professional data visualization background */}
+      {/* Modern fluid animation background */}
       <canvas
         ref={canvasRef}
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 w-full h-full"
         style={{ pointerEvents: 'none' }}
       />
       
-      {/* 3D elements with subtle animation */}
+      {/* Subtle 3D elements with animation */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div ref={animationRef} className="absolute w-full h-full">
-          {/* Abstract 3D planes with more professional styling */}
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-br from-coreon-blue/5 to-transparent rounded-lg transform rotate-12 animate-float-slow"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-gradient-to-tr from-coreon-blue/3 to-transparent rounded-lg transform -rotate-12 animate-float-slow" style={{ animationDelay: '1.5s' }}></div>
-          
-          {/* Enterprise architecture visualization */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-64 opacity-20">
-            {/* Horizontal layers representing enterprise architecture */}
-            <div className="absolute w-full h-1 bg-gradient-to-r from-transparent via-coreon-blue/40 to-transparent top-0"></div>
-            <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-coreon-blue/30 to-transparent top-1/4"></div>
-            <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-coreon-blue/30 to-transparent top-2/4"></div>
-            <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-coreon-blue/30 to-transparent top-3/4"></div>
-            <div className="absolute w-full h-1 bg-gradient-to-r from-transparent via-coreon-blue/40 to-transparent bottom-0"></div>
-            
-            {/* Vertical connectors */}
-            <div className="absolute h-full w-px bg-gradient-to-b from-transparent via-coreon-blue/30 to-transparent left-1/4"></div>
-            <div className="absolute h-full w-px bg-gradient-to-b from-transparent via-coreon-blue/30 to-transparent left-2/4"></div>
-            <div className="absolute h-full w-px bg-gradient-to-b from-transparent via-coreon-blue/30 to-transparent left-3/4"></div>
-            
-            {/* Layer labels */}
-            <div className="absolute -right-20 top-0 text-xs text-coreon-blue/40">Interface Layer</div>
-            <div className="absolute -right-20 top-1/4 text-xs text-coreon-blue/40">Business Logic</div>
-            <div className="absolute -right-20 top-2/4 text-xs text-coreon-blue/40">Data Processing</div>
-            <div className="absolute -right-20 top-3/4 text-xs text-coreon-blue/40">Infrastructure</div>
-          </div>
+          {/* Abstract geometric shapes with subtle styling */}
+          <div className="absolute top-1/4 left-1/3 w-72 h-72 bg-gradient-to-br from-coreon-blue/5 to-transparent rounded-full transform blur-xl animate-float-slow"></div>
+          <div className="absolute bottom-1/4 right-1/3 w-96 h-96 bg-gradient-to-tr from-coreon-blue/3 to-transparent rounded-full transform blur-xl animate-float-slow" style={{ animationDelay: '1.5s' }}></div>
         </div>
       </div>
 
-      <div className="container-custom relative z-10">
+      <div className="container-custom">
         <motion.div
-          className="max-w-3xl mx-auto text-center"
+          className="max-w-4xl mx-auto text-center"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
-          <motion.h1 variants={itemVariants} className="mb-6">
-            <span className="gradient-text">Orchestrating</span> Intelligent<br />
-            Agent Systems for Enterprise
+          <motion.h1
+            className="mb-6 text-4xl md:text-5xl lg:text-6xl font-extrabold"
+            variants={itemVariants}
+          >
+            <span className="gradient-text">Enterprise AI Orchestration</span>
+            <br />
+            <span className="text-white">for Regulated Environments</span>
           </motion.h1>
-          
-          <motion.p variants={itemVariants} className="text-xl mb-8 max-w-2xl mx-auto">
-            Deploy secure, compliant AI agent networks with human oversight for critical operations in regulated industries.
+
+          <motion.p
+            className="mb-10 text-xl text-coreon-gray-light"
+            variants={itemVariants}
+          >
+            Deploy intelligent agent systems with human oversight, complete auditability, and regulatory compliance.
           </motion.p>
-          
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/demo" className="btn-primary">
-              Live Demo
+
+          <motion.div 
+            className="flex flex-col sm:flex-row justify-center gap-4"
+            variants={itemVariants}
+          >
+            <Link 
+              href="/demo" 
+              className="btn-primary px-8 py-4 text-lg"
+            >
+              See Live Demo
             </Link>
-            <Link href="/docs" className="btn-secondary">
+            <Link 
+              href="/docs" 
+              className="btn-secondary px-8 py-4 text-lg"
+            >
               Documentation
             </Link>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
+            className="mt-16 p-6 bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg"
             variants={itemVariants}
-            className="mt-16 p-6 bg-coreon-navy/50 backdrop-blur-md rounded-xl border border-coreon-blue/20"
           >
-            <div className="text-sm text-coreon-gray-light/70 mb-2">Trusted by regulated industries</div>
-            <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-              {['Healthcare', 'Finance', 'Insurance', 'Public Sector'].map((industry) => (
-                <div key={industry} className="text-coreon-gray-light font-medium">
-                  {industry}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+              <div>
+                <div className="text-2xl font-bold text-coreon-blue">
+                  <span className="inline-block w-12 h-12 rounded-full bg-coreon-blue/10 flex items-center justify-center mb-3 mx-auto">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </span>
+                  <div>100%</div>
                 </div>
-              ))}
+                <div className="text-sm text-coreon-gray-light">Compliance</div>
+              </div>
+              
+              <div>
+                <div className="text-2xl font-bold text-coreon-blue">
+                  <span className="inline-block w-12 h-12 rounded-full bg-coreon-blue/10 flex items-center justify-center mb-3 mx-auto">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </span>
+                  <div>80%</div>
+                </div>
+                <div className="text-sm text-coreon-gray-light">Cost Reduction</div>
+              </div>
+              
+              <div>
+                <div className="text-2xl font-bold text-coreon-blue">
+                  <span className="inline-block w-12 h-12 rounded-full bg-coreon-blue/10 flex items-center justify-center mb-3 mx-auto">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </span>
+                  <div>10x</div>
+                </div>
+                <div className="text-sm text-coreon-gray-light">Faster Deployment</div>
+              </div>
+              
+              <div>
+                <div className="text-2xl font-bold text-coreon-blue">
+                  <span className="inline-block w-12 h-12 rounded-full bg-coreon-blue/10 flex items-center justify-center mb-3 mx-auto">
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  </span>
+                  <div>24/7</div>
+                </div>
+                <div className="text-sm text-coreon-gray-light">Human Oversight</div>
+              </div>
             </div>
           </motion.div>
         </motion.div>

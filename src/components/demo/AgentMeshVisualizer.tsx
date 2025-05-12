@@ -21,9 +21,10 @@ interface Connection {
 interface AgentMeshVisualizerProps {
   agents: Agent[];
   connections: Connection[];
+  view?: 'network' | 'hierarchy';
 }
 
-export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVisualizerProps) {
+export default function AgentMeshVisualizer({ agents, connections, view = 'network' }: AgentMeshVisualizerProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameId = useRef<number>(0);
   const agentPositions = useRef<Map<string, { x: number; y: number; vx: number; vy: number; size: number; pulsePhase: number }>>(new Map());
@@ -56,57 +57,95 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
       canvas.width = container.clientWidth;
       canvas.height = container.clientHeight;
       
-      // Initialize agent positions if not set
-      if (agentPositions.current.size === 0) {
-        initializeAgentPositions();
-      }
+      // Reset positions when view changes or when first initializing
+      initializeAgentPositions();
     };
 
-    // Initialize positions for agents
+    // Initialize positions for agents - with different layouts for different views
     const initializeAgentPositions = () => {
       agentPositions.current.clear();
       
-      // Place agents in a structured arrangement initially
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
       
-      // Place orchestration agents in the center
-      const orchestrators = agents.filter(agent => agent.type === 'orchestration');
-      const otherAgents = agents.filter(agent => agent.type !== 'orchestration');
-      
-      // Position orchestrators in the center
-      orchestrators.forEach((agent, index) => {
-        const angle = (index / Math.max(1, orchestrators.length)) * Math.PI * 2;
-        const radius = Math.min(canvas.width, canvas.height) * 0.15;
-        const x = centerX + Math.cos(angle) * radius;
-        const y = centerY + Math.sin(angle) * radius;
+      if (view === 'network') {
+        // Network view: radial layout with orchestrators in center
+        // Place orchestration agents in the center
+        const orchestrators = agents.filter(agent => agent.type === 'orchestration');
+        const otherAgents = agents.filter(agent => agent.type !== 'orchestration');
         
-        agentPositions.current.set(agent.id, {
-          x,
-          y,
-          vx: 0,
-          vy: 0,
-          size: 22,
-          pulsePhase: Math.random() * Math.PI * 2
+        // Position orchestrators in the center
+        orchestrators.forEach((agent, index) => {
+          const angle = (index / Math.max(1, orchestrators.length)) * Math.PI * 2;
+          const radius = Math.min(canvas.width, canvas.height) * 0.15;
+          const x = centerX + Math.cos(angle) * radius;
+          const y = centerY + Math.sin(angle) * radius;
+          
+          agentPositions.current.set(agent.id, {
+            x,
+            y,
+            vx: 0,
+            vy: 0,
+            size: 22,
+            pulsePhase: Math.random() * Math.PI * 2
+          });
         });
-      });
-      
-      // Position other agents in an outer circle
-      otherAgents.forEach((agent, index) => {
-        const angle = (index / otherAgents.length) * Math.PI * 2;
-        const radius = Math.min(canvas.width, canvas.height) * 0.35;
-        const x = centerX + Math.cos(angle) * radius;
-        const y = centerY + Math.sin(angle) * radius;
         
-        agentPositions.current.set(agent.id, {
-          x,
-          y,
-          vx: 0,
-          vy: 0,
-          size: 18,
-          pulsePhase: Math.random() * Math.PI * 2
+        // Position other agents in an outer circle
+        otherAgents.forEach((agent, index) => {
+          const angle = (index / otherAgents.length) * Math.PI * 2;
+          const radius = Math.min(canvas.width, canvas.height) * 0.35;
+          const x = centerX + Math.cos(angle) * radius;
+          const y = centerY + Math.sin(angle) * radius;
+          
+          agentPositions.current.set(agent.id, {
+            x,
+            y,
+            vx: 0,
+            vy: 0,
+            size: 18,
+            pulsePhase: Math.random() * Math.PI * 2
+          });
         });
-      });
+      } else {
+        // Hierarchy view: top-down organizational chart
+        // Group agents by type
+        const agentsByType: Record<string, Agent[]> = {};
+        
+        agents.forEach(agent => {
+          if (!agentsByType[agent.type]) {
+            agentsByType[agent.type] = [];
+          }
+          agentsByType[agent.type].push(agent);
+        });
+        
+        // Calculate total number of rows we need
+        const layerTypes = ['orchestration', 'interface', 'data-processing', 'compliance', 'storage'];
+        const existingLayerTypes = layerTypes.filter(type => agentsByType[type]?.length > 0);
+        const rowHeight = canvas.height / (existingLayerTypes.length + 1);
+        
+        // Position agents by layer type
+        existingLayerTypes.forEach((type, layerIndex) => {
+          const agentsInLayer = agentsByType[type] || [];
+          const y = rowHeight * (layerIndex + 1);
+          
+          // Position agents horizontally across the layer
+          agentsInLayer.forEach((agent, agentIndex) => {
+            const totalInLayer = agentsInLayer.length;
+            const segmentWidth = canvas.width / (totalInLayer + 1);
+            const x = segmentWidth * (agentIndex + 1);
+            
+            agentPositions.current.set(agent.id, {
+              x,
+              y,
+              vx: 0,
+              vy: 0,
+              size: type === 'orchestration' ? 22 : 18,
+              pulsePhase: Math.random() * Math.PI * 2
+            });
+          });
+        });
+      }
     };
 
     // Draw the agent mesh
@@ -124,8 +163,15 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      // Update agent positions with gentle movement
-      updatePositions();
+      if (view === 'hierarchy') {
+        // In hierarchy view, first draw layer labels
+        drawHierarchyLayers(ctx);
+      }
+      
+      // Update agent positions with gentle movement - only in network view
+      if (view === 'network') {
+        updatePositions();
+      }
       
       // Draw connections first (so they appear behind agents)
       drawConnections();
@@ -137,7 +183,51 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
       animationFrameId.current = requestAnimationFrame(draw);
     };
 
-    // Update agent positions with subtle physics
+    // Draw hierarchy layer labels
+    const drawHierarchyLayers = (ctx: CanvasRenderingContext2D) => {
+      const layerLabels = {
+        'orchestration': 'Orchestration Layer',
+        'interface': 'Interface Layer',
+        'data-processing': 'Processing Layer',
+        'compliance': 'Compliance Layer',
+        'storage': 'Storage Layer'
+      };
+      
+      // Group agents by type
+      const agentsByType: Record<string, Agent[]> = {};
+      agents.forEach(agent => {
+        if (!agentsByType[agent.type]) {
+          agentsByType[agent.type] = [];
+        }
+        agentsByType[agent.type].push(agent);
+      });
+      
+      // Calculate layer positions
+      const layerTypes = ['orchestration', 'interface', 'data-processing', 'compliance', 'storage'];
+      const existingLayerTypes = layerTypes.filter(type => agentsByType[type]?.length > 0);
+      const rowHeight = canvas.height / (existingLayerTypes.length + 1);
+      
+      // Draw layer separators and labels
+      existingLayerTypes.forEach((type, layerIndex) => {
+        const y = rowHeight * (layerIndex + 1);
+        
+        // Draw subtle horizontal separator line
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(canvas.width, y);
+        ctx.strokeStyle = 'rgba(48, 198, 255, 0.1)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        
+        // Draw layer label
+        ctx.font = '12px Arial';
+        ctx.fillStyle = `rgba(${hexToRgb(typeColors[type] || '#ffffff')}, 0.7)`;
+        ctx.textAlign = 'left';
+        ctx.fillText(layerLabels[type] || type, 10, y - 10);
+      });
+    };
+
+    // Update agent positions with subtle physics - for network view
     const updatePositions = () => {
       if (!canvas) return;
       
@@ -245,8 +335,19 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
             
             // Draw connection line
             ctx.beginPath();
-            ctx.moveTo(startX, startY);
-            ctx.lineTo(endX, endY);
+            
+            if (view === 'hierarchy') {
+              // In hierarchy view, use curved lines for connections
+              const controlPointX = (startX + endX) / 2;
+              const controlPointY = Math.min(startY, endY) - 30; // control point above the line
+              
+              ctx.moveTo(startX, startY);
+              ctx.quadraticCurveTo(controlPointX, controlPointY, endX, endY);
+            } else {
+              // In network view, use straight lines
+              ctx.moveTo(startX, startY);
+              ctx.lineTo(endX, endY);
+            }
             
             // Gradient line based on agent types
             const gradient = ctx.createLinearGradient(startX, startY, endX, endY);
@@ -263,8 +364,8 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
             ctx.stroke();
             ctx.globalAlpha = 1;
             
-            // Draw data flow indicators (subtle dots)
-            if (distance > 60 && (agent1.status === 'active' || agent2.status === 'active')) {
+            // Draw data flow indicators (subtle dots) - only in network view
+            if (view === 'network' && distance > 60 && (agent1.status === 'active' || agent2.status === 'active')) {
               const now = Date.now() / 1000;
               const particleCount = 2;
               const particleSpeed = 1.5; // Lower is faster
@@ -285,8 +386,10 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
             
             // Show connection type
             const midX = (startX + endX) / 2;
-            const midY = (startY + endY) / 2;
-            
+            const midY = view === 'hierarchy' 
+              ? controlPointY // position label at control point for curved lines
+              : (startY + endY) / 2; // position label at midpoint for straight lines
+              
             ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
             ctx.font = '8px Arial';
             ctx.textAlign = 'center';
@@ -507,7 +610,7 @@ export default function AgentMeshVisualizer({ agents, connections }: AgentMeshVi
       window.removeEventListener('resize', resizeCanvas);
       cancelAnimationFrame(animationFrameId.current);
     };
-  }, [agents, connections]);
+  }, [agents, connections, view]); // Added view to dependencies to re-initialize when it changes
 
   return (
     <canvas 

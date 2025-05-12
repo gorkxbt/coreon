@@ -12,6 +12,28 @@ import CompliancePanel from '../../components/demo/CompliancePanel';
 import HumanReviewQueue from '../../components/demo/HumanReviewQueue';
 import MetricsDisplay from '../../components/demo/MetricsDisplay';
 
+// Generate current and upcoming dates
+const currentDate = new Date();
+const tomorrow = new Date();
+tomorrow.setDate(currentDate.getDate() + 1);
+const dayAfterTomorrow = new Date();
+dayAfterTomorrow.setDate(currentDate.getDate() + 2);
+
+// Time an hour ago
+const hourAgo = new Date();
+hourAgo.setHours(currentDate.getHours() - 1);
+
+// Earlier today
+const earlierToday = new Date();
+earlierToday.setHours(currentDate.getHours() - 3);
+
+// Format to ISO string
+const currentDateISO = currentDate.toISOString();
+const hourAgoISO = hourAgo.toISOString();
+const earlierTodayISO = earlierToday.toISOString();
+const tomorrowISO = tomorrow.toISOString();
+const dayAfterTomorrowISO = dayAfterTomorrow.toISOString();
+
 // Enterprise demo data with realistic use cases
 const demoAgents = [
   { id: 'classifier-1', name: 'Document Classifier', type: 'data-processing', status: 'active', confidence: 0.95, model: 'coreon-nlp-v2' },
@@ -45,8 +67,8 @@ const demoTasks = [
     priority: 'high', 
     agent: 'validator-1',
     type: 'Financial',
-    created: '2023-06-15T10:23:15Z',
-    deadline: '2023-06-15T18:00:00Z'
+    created: hourAgoISO,
+    deadline: tomorrowISO
   },
   { 
     id: 'task-2', 
@@ -56,8 +78,8 @@ const demoTasks = [
     priority: 'medium', 
     agent: 'reviewer-1',
     type: 'Healthcare',
-    created: '2023-06-15T09:45:22Z',
-    deadline: '2023-06-16T12:00:00Z'
+    created: earlierTodayISO,
+    deadline: tomorrowISO
   },
   { 
     id: 'task-3', 
@@ -67,8 +89,8 @@ const demoTasks = [
     priority: 'low', 
     agent: null,
     type: 'Financial',
-    created: '2023-06-15T14:12:05Z',
-    deadline: '2023-06-17T16:00:00Z'
+    created: currentDateISO,
+    deadline: dayAfterTomorrowISO
   },
   { 
     id: 'task-4', 
@@ -78,8 +100,8 @@ const demoTasks = [
     priority: 'high', 
     agent: null,
     type: 'Regulatory',
-    created: '2023-06-14T11:30:45Z',
-    deadline: '2023-06-15T09:00:00Z'
+    created: earlierTodayISO,
+    deadline: currentDateISO
   },
   { 
     id: 'task-5', 
@@ -89,8 +111,8 @@ const demoTasks = [
     priority: 'medium', 
     agent: 'extractor-1',
     type: 'Healthcare',
-    created: '2023-06-15T13:18:32Z',
-    deadline: '2023-06-16T10:00:00Z'
+    created: currentDateISO,
+    deadline: tomorrowISO
   },
   { 
     id: 'task-6', 
@@ -100,8 +122,8 @@ const demoTasks = [
     priority: 'high', 
     agent: 'reviewer-1',
     type: 'Regulatory',
-    created: '2023-06-15T08:22:17Z',
-    deadline: '2023-06-15T17:00:00Z'
+    created: earlierTodayISO,
+    deadline: currentDateISO
   },
 ];
 
@@ -114,7 +136,7 @@ const demoReviewItems = [
     confidence: 0.82,
     flagged: true,
     reason: 'PII detected in unstructured field',
-    timeReceived: '2023-06-15T14:32:00Z',
+    timeReceived: hourAgoISO,
     department: 'Healthcare',
     assignedTo: 'Dr. Sarah Chen',
     dataPoints: ['Patient ID', 'Treatment Code', 'Diagnosis']
@@ -127,7 +149,7 @@ const demoReviewItems = [
     confidence: 0.91,
     flagged: false,
     reason: 'Unusual claim amount detected',
-    timeReceived: '2023-06-15T13:45:00Z',
+    timeReceived: earlierTodayISO,
     department: 'Financial',
     assignedTo: 'Michael Rodriguez',
     dataPoints: ['Claim Amount', 'Policy Number', 'Incident Date']
@@ -140,7 +162,7 @@ const demoReviewItems = [
     confidence: 0.87,
     flagged: true,
     reason: 'Regulatory exception requires approval',
-    timeReceived: '2023-06-15T15:10:00Z',
+    timeReceived: currentDateISO,
     department: 'Compliance',
     assignedTo: 'Jennifer Walsh',
     dataPoints: ['Exception Code', 'Regulation ID', 'Documentation Status']
@@ -152,9 +174,12 @@ export default function Demo() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [agents, setAgents] = useState(demoAgents);
   const [tasks, setTasks] = useState(demoTasks);
+  const [filteredTasks, setFilteredTasks] = useState(demoTasks);
+  const [taskFilter, setTaskFilter] = useState('all');
   const [reviewItems, setReviewItems] = useState(demoReviewItems);
   const [demoInstance, setDemoInstance] = useState('healthcare-1');
   const [demoRunning, setDemoRunning] = useState(true);
+  const [visualizationView, setVisualizationView] = useState('network');
 
   // Simulate agent activity
   useEffect(() => {
@@ -172,8 +197,8 @@ export default function Demo() {
       );
 
       // Update task progress
-      setTasks(prev => 
-        prev.map(task => {
+      setTasks(prev => {
+        const updatedTasks = prev.map(task => {
           if (task.status === 'in-progress') {
             const newCompletion = Math.min(100, task.completion + Math.floor(Math.random() * 5));
             return {
@@ -183,12 +208,31 @@ export default function Demo() {
             };
           }
           return task;
-        })
-      );
+        });
+        
+        // Apply filter to updated tasks
+        applyTaskFilter(updatedTasks);
+        return updatedTasks;
+      });
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [demoRunning]);
+  }, [demoRunning, taskFilter]);
+
+  // Apply task filter
+  const applyTaskFilter = (tasksToFilter = tasks) => {
+    if (taskFilter === 'all') {
+      setFilteredTasks(tasksToFilter);
+    } else {
+      setFilteredTasks(tasksToFilter.filter(task => task.status === taskFilter));
+    }
+  };
+
+  // Handle task filter change
+  const handleFilterChange = (filter: string) => {
+    setTaskFilter(filter);
+    applyTaskFilter(tasks);
+  };
 
   // Handle review approval
   const handleApprove = (reviewId: string) => {
@@ -207,6 +251,8 @@ export default function Demo() {
         'Security policy exception'
       ];
       
+      const now = new Date();
+      
       const newReview = {
         id: `review-${Date.now()}`,
         task: `Task #${Math.floor(Math.random() * 1000)}`,
@@ -215,7 +261,7 @@ export default function Demo() {
         confidence: 0.75 + (Math.random() * 0.2),
         flagged: Math.random() > 0.7,
         reason: reasons[Math.floor(Math.random() * reasons.length)],
-        timeReceived: new Date().toISOString(),
+        timeReceived: now.toISOString(),
         department: departments[Math.floor(Math.random() * departments.length)],
         assignedTo: ['Dr. Sarah Chen', 'Michael Rodriguez', 'Jennifer Walsh', 'David Kim'][Math.floor(Math.random() * 4)],
         dataPoints: ['Document ID', 'Verification Status', 'Approval Level']
@@ -241,6 +287,32 @@ export default function Demo() {
     // In a real implementation, this would load different datasets
   };
 
+  // Toggle visualization view
+  const toggleVisualizationView = (view: string) => {
+    setVisualizationView(view);
+  };
+
+  // Get current date formatted
+  const getCurrentDate = () => {
+    const now = new Date();
+    return now.toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
+  // Get current time formatted
+  const getCurrentTime = () => {
+    const now = new Date();
+    return now.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+  };
+
   return (
     <main className="min-h-screen bg-coreon-navy-dark">
       <div 
@@ -264,7 +336,7 @@ export default function Demo() {
         <div className="container-custom max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Top section with title and controls */}
           <div className="mb-8 bg-coreon-navy/30 backdrop-blur-md p-6 rounded-xl border border-coreon-blue/20 shadow-lg">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold mb-2 gradient-text">
                   Enterprise AI Orchestration
@@ -272,9 +344,12 @@ export default function Demo() {
                 <p className="text-xl text-coreon-gray-light">
                   Interactive demonstration of Coreon's agent mesh technology
                 </p>
+                <p className="text-sm text-coreon-gray-light mt-2">
+                  {getCurrentDate()} • {getCurrentTime()} • Live Demo Environment
+                </p>
               </div>
               
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-3">
                 <div className="flex items-center border border-coreon-blue/30 rounded-lg px-4 py-2 bg-coreon-navy/50">
                   <span className="text-sm text-coreon-gray-light mr-2">Instance:</span>
                   <select 
@@ -299,9 +374,9 @@ export default function Demo() {
               </div>
             </div>
 
-            {/* System stats - New row */}
-            <div className="grid grid-cols-4 gap-4 mt-6 pt-6 border-t border-coreon-blue/10">
-              <div className="col-span-4 sm:col-span-1">
+            {/* System status - Redesigned row */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-6 border-t border-coreon-blue/10">
+              <div>
                 <div className="flex items-center">
                   <div className="w-10 h-10 flex items-center justify-center rounded-full bg-green-500/10 mr-3">
                     <span className="inline-block w-2 h-2 rounded-full bg-green-400"></span>
@@ -313,7 +388,7 @@ export default function Demo() {
                 </div>
               </div>
               
-              <div className="col-span-4 sm:col-span-1">
+              <div>
                 <div className="flex items-center">
                   <div className="w-10 h-10 flex items-center justify-center rounded-full bg-coreon-blue/10 mr-3">
                     <svg className="w-5 h-5 text-coreon-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -327,7 +402,7 @@ export default function Demo() {
                 </div>
               </div>
               
-              <div className="col-span-4 sm:col-span-1">
+              <div>
                 <div className="flex items-center">
                   <div className="w-10 h-10 flex items-center justify-center rounded-full bg-purple-500/10 mr-3">
                     <svg className="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -341,7 +416,7 @@ export default function Demo() {
                 </div>
               </div>
               
-              <div className="col-span-4 sm:col-span-1">
+              <div>
                 <div className="flex items-center">
                   <div className="w-10 h-10 flex items-center justify-center rounded-full bg-yellow-500/10 mr-3">
                     <svg className="w-5 h-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -357,57 +432,58 @@ export default function Demo() {
             </div>
           </div>
           
-          <div className="grid grid-cols-12 gap-6 mb-8">
-            {/* Main visualization */}
-            <div className="col-span-12 lg:col-span-8 bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg overflow-hidden">
-              <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
-                <h2 className="font-bold text-lg">Agent Mesh Visualization</h2>
-                <div className="flex items-center">
-                  <span className="text-xs text-coreon-gray-light mr-2">View:</span>
-                  <div className="flex bg-coreon-navy/70 rounded-lg overflow-hidden">
-                    <button className="px-3 py-1 text-xs bg-coreon-blue/20 text-white">Network</button>
-                    <button className="px-3 py-1 text-xs text-coreon-gray-light hover:bg-coreon-blue/10">Hierarchy</button>
-                  </div>
-                </div>
-              </div>
-              <div className="p-4 h-[500px]">
-                <AgentMeshVisualizer 
-                  agents={agents} 
-                  connections={demoConnections}
-                />
-              </div>
-            </div>
-            
-            {/* Agent Controls */}
-            <div className="col-span-12 lg:col-span-4">
+          {/* Main layout - Redesigned for better organization */}
+          <div className="grid grid-cols-12 gap-6">
+            {/* Left column - Visualization + Controls */}
+            <div className="col-span-12 lg:col-span-8 space-y-6">
+              {/* Visualization Section */}
               <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg overflow-hidden">
                 <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
-                  <h2 className="font-bold text-lg">Agent Controls</h2>
-                  <button className="text-xs text-coreon-blue hover:text-coreon-blue-light">
-                    Configure All
-                  </button>
+                  <h2 className="font-bold text-lg">Agent Mesh Visualization</h2>
+                  <div className="flex items-center">
+                    <span className="text-xs text-coreon-gray-light mr-2">View:</span>
+                    <div className="flex bg-coreon-navy/70 rounded-lg overflow-hidden">
+                      <button 
+                        className={`px-3 py-1 text-xs ${visualizationView === 'network' ? 'bg-coreon-blue/20 text-white' : 'text-coreon-gray-light hover:bg-coreon-blue/10'}`}
+                        onClick={() => toggleVisualizationView('network')}
+                      >
+                        Network
+                      </button>
+                      <button 
+                        className={`px-3 py-1 text-xs ${visualizationView === 'hierarchy' ? 'bg-coreon-blue/20 text-white' : 'text-coreon-gray-light hover:bg-coreon-blue/10'}`}
+                        onClick={() => toggleVisualizationView('hierarchy')}
+                      >
+                        Hierarchy
+                      </button>
+                    </div>
+                  </div>
                 </div>
-                <div className="p-4 max-h-[500px] overflow-y-auto">
-                  <AgentControls agents={agents} />
+                <div className="p-4 h-[400px]">
+                  <AgentMeshVisualizer 
+                    agents={agents} 
+                    connections={demoConnections}
+                    view={visualizationView}
+                  />
                 </div>
               </div>
-            </div>
-          </div>
-          
-          <div className="grid grid-cols-12 gap-6 mb-8">
-            {/* Task Monitor */}
-            <div className="col-span-12 lg:col-span-8">
+              
+              {/* Task Monitor Section */}
               <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg overflow-hidden">
                 <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
                   <h2 className="font-bold text-lg">Task Monitor</h2>
                   <div className="flex items-center gap-3">
                     <div className="flex items-center text-xs text-coreon-gray-light">
                       <span className="mr-2">Filter:</span>
-                      <select className="bg-coreon-navy/70 border border-coreon-blue/20 rounded px-2 py-1 text-white text-xs">
-                        <option>All Tasks</option>
-                        <option>In Progress</option>
-                        <option>Pending Review</option>
-                        <option>Completed</option>
+                      <select 
+                        className="bg-coreon-navy/70 border border-coreon-blue/20 rounded px-2 py-1 text-white text-xs"
+                        value={taskFilter}
+                        onChange={(e) => handleFilterChange(e.target.value)}
+                      >
+                        <option value="all">All Tasks</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="pending-review">Pending Review</option>
+                        <option value="completed">Completed</option>
+                        <option value="queued">Queued</option>
                       </select>
                     </div>
                     <button className="text-xs text-coreon-blue hover:text-coreon-blue-light">
@@ -416,13 +492,32 @@ export default function Demo() {
                   </div>
                 </div>
                 <div className="overflow-hidden">
-                  <TaskMonitor tasks={tasks} />
+                  <TaskMonitor tasks={filteredTasks} />
                 </div>
+              </div>
+              
+              {/* Metrics Display */}
+              <div>
+                <MetricsDisplay demoRunning={demoRunning} />
               </div>
             </div>
             
-            {/* Human Review Queue */}
-            <div className="col-span-12 lg:col-span-4">
+            {/* Right column - Controls, Review Queue, Compliance */}
+            <div className="col-span-12 lg:col-span-4 space-y-6">
+              {/* Agent Controls */}
+              <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg overflow-hidden">
+                <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
+                  <h2 className="font-bold text-lg">Agent Controls</h2>
+                  <button className="text-xs text-coreon-blue hover:text-coreon-blue-light">
+                    Configure All
+                  </button>
+                </div>
+                <div className="p-4 max-h-[300px] overflow-y-auto">
+                  <AgentControls agents={agents} />
+                </div>
+              </div>
+              
+              {/* Human Review Queue */}
               <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg">
                 <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
                   <div className="flex items-center">
@@ -435,7 +530,7 @@ export default function Demo() {
                     View All
                   </button>
                 </div>
-                <div className="p-4 max-h-[600px] overflow-y-auto">
+                <div className="p-4 max-h-[400px] overflow-y-auto">
                   <HumanReviewQueue 
                     items={reviewItems} 
                     onApprove={handleApprove}
@@ -443,24 +538,19 @@ export default function Demo() {
                   />
                 </div>
               </div>
-            </div>
-          </div>
-          
-          {/* Metrics Display - Added before the Compliance Panel */}
-          <div className="mb-8">
-            <MetricsDisplay demoRunning={demoRunning} />
-          </div>
-          
-          {/* Compliance Panel */}
-          <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg">
-            <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
-              <h2 className="font-bold text-lg">Compliance & Audit</h2>
-              <button className="text-xs text-coreon-blue hover:text-coreon-blue-light">
-                Export Report
-              </button>
-            </div>
-            <div className="p-4">
-              <CompliancePanel />
+              
+              {/* Compliance Panel - Collapsed by default */}
+              <div className="bg-coreon-navy/30 backdrop-blur-md rounded-xl border border-coreon-blue/20 shadow-lg">
+                <div className="p-4 border-b border-coreon-blue/20 flex items-center justify-between">
+                  <h2 className="font-bold text-lg">Compliance & Audit</h2>
+                  <button className="text-xs text-coreon-blue hover:text-coreon-blue-light">
+                    Export Report
+                  </button>
+                </div>
+                <div className="p-4">
+                  <CompliancePanel />
+                </div>
+              </div>
             </div>
           </div>
         </div>
