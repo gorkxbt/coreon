@@ -179,7 +179,7 @@ export default function Demo() {
   const [reviewItems, setReviewItems] = useState(demoReviewItems);
   const [demoInstance, setDemoInstance] = useState('healthcare-1');
   const [demoRunning, setDemoRunning] = useState(true);
-  const [visualizationView, setVisualizationView] = useState('network');
+  const [visualizationView, setVisualizationView] = useState<'network' | 'hierarchy'>('network');
 
   // Simulate agent activity
   useEffect(() => {
@@ -288,7 +288,7 @@ export default function Demo() {
   };
 
   // Toggle visualization view
-  const toggleVisualizationView = (view: string) => {
+  const toggleVisualizationView = (view: 'network' | 'hierarchy') => {
     setVisualizationView(view);
   };
 
