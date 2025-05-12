@@ -185,7 +185,7 @@ export default function AgentMeshVisualizer({ agents, connections, view = 'netwo
 
     // Draw hierarchy layer labels
     const drawHierarchyLayers = (ctx: CanvasRenderingContext2D) => {
-      const layerLabels = {
+      const layerLabels: Record<string, string> = {
         'orchestration': 'Orchestration Layer',
         'interface': 'Interface Layer',
         'data-processing': 'Processing Layer',
@@ -386,8 +386,15 @@ export default function AgentMeshVisualizer({ agents, connections, view = 'netwo
             
             // Show connection type
             const midX = (startX + endX) / 2;
+            let controlPointY: number;
+            
+            if (view === 'hierarchy') {
+              // In hierarchy view, control point is above the line
+              controlPointY = Math.min(startY, endY) - 30;
+            }
+            
             const midY = view === 'hierarchy' 
-              ? controlPointY // position label at control point for curved lines
+              ? controlPointY! // position label at control point for curved lines
               : (startY + endY) / 2; // position label at midpoint for straight lines
               
             ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
