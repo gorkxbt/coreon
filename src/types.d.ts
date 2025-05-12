@@ -3,6 +3,55 @@ declare module 'react' {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
     [key: string]: any;
   }
+  
+  // Add React hooks
+  export function useState<T>(initialState: T | (() => T)): [T, React.Dispatch<React.SetStateAction<T>>];
+  export function useEffect(effect: React.EffectCallback, deps?: React.DependencyList): void;
+  export function useContext<T>(context: React.Context<T>): T;
+  export function useReducer<R extends React.Reducer<any, any>, I>(
+    reducer: R,
+    initialArg: I,
+    init?: (arg: I) => React.ReducerState<R>
+  ): [React.ReducerState<R>, React.Dispatch<React.ReducerAction<R>>];
+  export function useCallback<T extends (...args: any[]) => any>(
+    callback: T,
+    deps: React.DependencyList
+  ): T;
+  export function useMemo<T>(factory: () => T, deps: React.DependencyList | undefined): T;
+  export function useRef<T>(initialValue: T): React.MutableRefObject<T>;
+  export function useRef<T>(initialValue: T | null): React.RefObject<T>;
+  export function useImperativeHandle<T, R extends T>(
+    ref: React.Ref<T> | undefined,
+    init: () => R,
+    deps?: React.DependencyList
+  ): void;
+  export function useLayoutEffect(effect: React.EffectCallback, deps?: React.DependencyList): void;
+  export function useDebugValue<T>(value: T, format?: (value: T) => any): void;
+  
+  // Add ref types
+  export interface RefObject<T> {
+    readonly current: T | null;
+  }
+  
+  export interface MutableRefObject<T> {
+    current: T;
+  }
+  
+  export type Ref<T> = RefCallback<T> | RefObject<T> | null;
+  export type RefCallback<T> = (instance: T | null) => void;
+  
+  // Add DependencyList and EffectCallback
+  export type DependencyList = ReadonlyArray<any>;
+  export type EffectCallback = () => void | (() => void);
+  
+  // Add Dispatch and SetStateAction
+  export type Dispatch<A> = (value: A) => void;
+  export type SetStateAction<S> = S | ((prevState: S) => S);
+  
+  // Add Reducer
+  export type Reducer<S, A> = (prevState: S, action: A) => S;
+  export type ReducerState<R extends Reducer<any, any>> = R extends Reducer<infer S, any> ? S : never;
+  export type ReducerAction<R extends Reducer<any, any>> = R extends Reducer<any, infer A> ? A : never;
 }
 
 declare namespace JSX {

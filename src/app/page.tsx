@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
 import Hero from '../components/Hero';
@@ -13,9 +13,9 @@ import CTA from '../components/CTA';
 import Footer from '../components/Footer';
 
 export default function Home() {
-  const [isLoaded, setIsLoaded] = React.useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setIsLoaded(true);
   }, []);
 
